@@ -51,3 +51,9 @@ conversation.handle(message) if conversation.can_be_handled?
 ```
 
 The `Conversation` can be handled if the intent (via the `on` methods) is found in one of the factories.
+
+## LICENSE
+
+Copyright (c) 2016, [Tatsu, LLC](http://tatsu.io).
+
+This project is licensed under the [MIT License](LICENSE.md).
