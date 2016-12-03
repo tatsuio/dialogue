@@ -1,4 +1,4 @@
-require "converse/conversation"
+require "converse/conversation_template"
 require "converse/dsl"
 require "converse/factory"
 

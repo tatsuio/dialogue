@@ -1,5 +1,5 @@
 module Converse
-  class Conversation
+  class ConversationTemplate
     attr_reader :intent
 
     def initialize(intent)
