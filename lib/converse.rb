@@ -3,6 +3,7 @@ require "converse/conversation"
 require "converse/conversation_handler"
 require "converse/dsl"
 require "converse/factory"
+require "converse/streams"
 
 module Converse
   class << self
