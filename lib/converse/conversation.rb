@@ -15,5 +15,6 @@ module Converse
       # TODO: Make this configurable
       Converse::Streams::Slack.new.puts statement
     end
+    alias_method :reply, :say
   end
 end
