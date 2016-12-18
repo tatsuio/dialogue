@@ -16,7 +16,7 @@ module Converse
     end
 
     def factory
-      @factory ||= Factory.new
+      Factory.instance
     end
 
     def register_conversation(conversation)

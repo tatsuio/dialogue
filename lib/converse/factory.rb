@@ -1,5 +1,9 @@
+require "singleton"
+
 module Converse
   class Factory
+    include Singleton
+
     attr_reader :conversations
 
     def initialize
