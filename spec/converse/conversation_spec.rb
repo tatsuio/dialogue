@@ -67,6 +67,15 @@ RSpec.describe Converse::Conversation do
       expect(ran).to eq true
     end
 
+    it "passes the conversation when the current step is performed" do
+      conversation = nil
+      subject = described_class.new { |c| conversation = c }
+
+      subject.start message
+
+      expect(conversation).to eq subject
+    end
+
     context "for a conversation that is already in the factory" do
       it "does not add it again" do
         Converse.register_conversation subject

@@ -35,7 +35,7 @@ module Converse
     private
 
     def perform
-      current_step.call unless current_step.nil?
+      current_step.call self unless current_step.nil?
       @current_step = nil
     end
   end
