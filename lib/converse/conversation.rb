@@ -13,7 +13,7 @@ module Converse
 
     def say(statement)
       # TODO: Make this configurable
-      Converse::Streams::Slack.new.puts statement
+      Converse::Streams::Slack.new.puts statement, channel_id, user_id
     end
     alias_method :reply, :say
 

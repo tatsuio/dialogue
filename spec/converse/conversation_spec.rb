@@ -1,4 +1,6 @@
 RSpec.describe Converse::Conversation do
+  include Converse::Test::SlackClientStubbing
+
   describe "#initialize" do
     it "can initialize with a block" do
       proc = Proc.new { }
@@ -8,6 +10,11 @@ RSpec.describe Converse::Conversation do
   end
 
   describe "#ask" do
+    let(:channel_id) { nil }
+    let(:user_id) { nil }
+
+    before { stub_chat }
+
     it "sets the current step to be the current block" do
       proc = Proc.new { }
 
@@ -20,18 +27,23 @@ RSpec.describe Converse::Conversation do
       question = "Are you ok?"
 
       expect_any_instance_of(Converse::Streams::Slack).to \
-        receive(:puts).with(question)
+        receive(:puts).with(question, channel_id, user_id)
 
       subject.ask question
     end
   end
 
   describe "say" do
+    let(:channel_id) { nil }
+    let(:user_id) { nil }
+
+    before { stub_chat }
+
     it "streams the message" do
       statement = "Hello world"
 
       expect_any_instance_of(Converse::Streams::Slack).to \
-        receive(:puts).with(statement)
+        receive(:puts).with(statement, channel_id, user_id)
 
       subject.say statement
     end
