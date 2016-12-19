@@ -11,6 +11,14 @@ module Converse
       DSL.run block
     end
 
+    def clear_conversations
+      factory.conversations.clear
+    end
+
+    def conversation_registered?(conversation)
+      factory.registered? conversation
+    end
+
     def conversations
       factory.conversations
     end

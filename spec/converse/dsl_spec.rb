@@ -2,6 +2,8 @@ RSpec.describe Converse::DSL do
   describe "#on" do
     subject { described_class.new }
 
+    before { Converse.clear_conversations }
+
     it "generates a conversation with an intent" do
       subject.on :blah
 
