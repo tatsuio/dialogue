@@ -78,6 +78,8 @@ RSpec.describe Converse::Conversation do
 
     context "for a conversation that is already in the factory" do
       it "does not add it again" do
+        allow(subject).to \
+          receive_messages(user_id: user_id, channel_id: channel_id)
         Converse.register_conversation subject
 
         subject.start message
