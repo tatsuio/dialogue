@@ -46,14 +46,19 @@ A conversation can `timeout`.
 A `message` comes in from somewhere and you can handle that message in a conversation. A `message` has a `user_id` and a `channel_id` along with some text. If the message matches one of the stored conversations (meaning the user id and channel id match), then the conversation is continued where it left off. If the conversation is not found, then a new conversation is started.
 
 ```
-conversation = Converse::Conversation.new(message)
-conversation.handle(message) if conversation.can_be_handled?
+Converse::Conversation.new do |conversation|
+  conversation.say "Hello world"
+end.start message
 ```
 
-The `Conversation` can be handled if the intent (via the `on` methods) is found in one of the factories.
+```
+Converse.handle(message)
+```
+
+This will register the conversation for the user and channel with the factory and activate the conversation.
 
 ## LICENSE
 
-Copyright (c) 2016, [Tatsu, LLC](http://tatsu.io).
+Copyright (c) 2016, [Tatsu, Inc.](http://tatsu.io).
 
 This project is licensed under the [MIT License](LICENSE.md).
