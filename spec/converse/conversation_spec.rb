@@ -24,7 +24,8 @@ RSpec.describe Converse::Conversation do
 
     context "invalid options" do
       it "does not allow for random options" do
-        expect { described_class.new({ blah: :bleh }) }.to raise_error Converse::InvalidOptionsError
+        expect { described_class.new({ blah: :bleh }) }.to \
+          raise_error Converse::InvalidOptionsError, "blah is not a valid option"
       end
     end
   end

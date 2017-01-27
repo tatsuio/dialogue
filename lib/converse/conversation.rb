@@ -45,10 +45,8 @@ module Converse
     private
 
     def guard_options!(options)
-      unless options.empty?
-        valid_options = [:access_token, :author_id]
-        raise InvalidOptionsError unless options.keys.all? { |k| valid_options.include?(k) }
-      end
+      result = ConversationOptionsValidator.new.validate options
+      raise InvalidOptionsError.new(result.error_messages) unless result.success?
     end
 
     def perform
