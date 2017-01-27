@@ -1,13 +1,14 @@
 module Converse
+  class InvalidOptionsError < RuntimeError
+  end
+
   class Conversation
-    attr_reader :channel_id, :current_step, :options, :user_id
+    attr_reader :channel_id, :current_step, :user_id
 
     # TODO: Need the author user id to stop from echoing it's messages
-    # TODO: Need the access token - should this be done in this constructor
-    # with the ability to specify a template instead of a block? - Meaning
-    # should templates be generic and conversations be instances of the
-    # started conversations?
     def initialize(options={}, &block)
+      guard_options! options
+
       @options = options
       @current_step = block
     end
@@ -42,6 +43,13 @@ module Converse
     alias_method :continue, :start
 
     private
+
+    def guard_options!(options)
+      unless options.empty?
+        valid_options = [:access_token, :author_id]
+        raise InvalidOptionsError unless options.keys.all? { |k| valid_options.include?(k) }
+      end
+    end
 
     def perform
       current_step.call self unless current_step.nil?

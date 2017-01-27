@@ -8,10 +8,24 @@ RSpec.describe Converse::Conversation do
       expect(described_class.new(&proc).current_step).to eq proc
     end
 
-    it "can initialize with valid options" do
-      options = { access_token: "BLAH" }
+    context "valid options" do
+      it "allows for empty options" do
+        expect { described_class.new({}) }.to_not raise_error
+      end
 
-      expect(described_class.new(options).options).to eq options
+      it "allows for an access token" do
+        expect { described_class.new({ access_token: "BLAH" }) }.to_not raise_error
+      end
+
+      it "allows for an author id" do
+        expect { described_class.new({ author_id: "BLAH" }) }.to_not raise_error
+      end
+    end
+
+    context "invalid options" do
+      it "does not allow for random options" do
+        expect { described_class.new({ blah: :bleh }) }.to raise_error Converse::InvalidOptionsError
+      end
     end
   end
 
