@@ -25,17 +25,17 @@ module Converse
     alias_method :reply, :say
 
     def start(message)
-      # TODO: Guard against the message from this bot
+      unless message_from_author?(message)
+        unless Converse.conversation_registered? self
+          # TODO: Wrap the message in a Slack decorator
+          @channel_id = message.channel
+          @user_id = message.user
 
-      unless Converse.conversation_registered? self
-        # TODO: Wrap the message in a Slack decorator
-        @channel_id = message.channel
-        @user_id = message.user
+          Converse.register_conversation self
+        end
 
-        Converse.register_conversation self
+        perform
       end
-
-      perform
 
       self
     end
@@ -48,6 +48,10 @@ module Converse
     def guard_options!(options)
       result = ConversationOptionsValidator.new.validate options
       raise InvalidOptionsError.new(result.error_messages) unless result.success?
+    end
+
+    def message_from_author?(message)
+      message.user == options[:author_id] && (channel_id.nil? || message.channel == channel_id)
     end
 
     def perform

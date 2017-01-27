@@ -130,5 +130,24 @@ RSpec.describe Converse::Conversation do
         expect(Converse.conversations.count).to eq 1
       end
     end
+
+    context "with a message from the author" do
+      let(:proc) { Proc.new {} }
+      subject { described_class.new(author_id: "BOT", &proc) }
+
+      before { allow(message).to receive(:user).and_return "BOT" }
+
+      it "skips the message" do
+        expect(proc).to_not receive(:call)
+
+        subject.start message
+      end
+
+      it "does not register the conversation" do
+        subject.start message
+
+        expect(Converse.conversations).to be_empty
+      end
+    end
   end
 end
