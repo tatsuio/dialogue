@@ -2,17 +2,21 @@ module Converse
   class Conversation
     attr_reader :channel_id, :current_step, :user_id
 
-    # TODO: Need the author user id to stop from echoing it's messages
     def initialize(options={}, &block)
       guard_options! options
 
-      @options = options
+      @options = options.freeze
       @current_step = block
     end
 
     def ask(question, &block)
       say question
       @current_step = block
+    end
+
+    def method_missing(method, *args)
+      return options.fetch method if options.key? method
+      super
     end
 
     def say(statement, options={})
@@ -40,6 +44,8 @@ module Converse
     alias_method :continue, :start
 
     private
+
+    attr_reader :options
 
     def guard_options!(options)
       result = ConversationOptionsValidator.new.validate options

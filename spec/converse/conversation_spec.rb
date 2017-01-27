@@ -20,6 +20,16 @@ RSpec.describe Converse::Conversation do
       it "allows for an author id" do
         expect { described_class.new({ author_id: "BLAH" }) }.to_not raise_error
       end
+
+      it "allows the options to respond as methods on the conversation" do
+        subject = described_class.new({ author_id: "BLAH" })
+
+        expect(subject.author_id).to eq "BLAH"
+      end
+
+      it "does not respond to messages that are not options" do
+        expect { subject.blah }.to raise_error NoMethodError
+      end
     end
 
     context "invalid options" do
