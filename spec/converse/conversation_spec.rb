@@ -44,7 +44,7 @@ RSpec.describe Converse::Conversation do
     let(:channel_id) { nil }
     let(:user_id) { nil }
 
-    before { stub_chat }
+    before { stub_slack_chat }
 
     it "sets the current step to be the current block" do
       proc = Proc.new { }
@@ -68,7 +68,7 @@ RSpec.describe Converse::Conversation do
     let(:channel_id) { nil }
     let(:user_id) { nil }
 
-    before { stub_chat }
+    before { stub_slack_chat }
 
     it "streams the message" do
       statement = "Hello world"
