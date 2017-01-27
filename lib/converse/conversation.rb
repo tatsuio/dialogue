@@ -19,10 +19,8 @@ module Converse
       super
     end
 
-    def say(statement, options={})
-      # TODO: Make this configurable
-      token = options[:access_token]
-      Converse::Streams::Slack.new(token).puts statement, channel_id, user_id
+    def say(statement)
+      Converse::Streams::Slack.new(options[:access_token]).puts statement, channel_id, user_id
     end
     alias_method :reply, :say
 
