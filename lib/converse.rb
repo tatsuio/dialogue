@@ -1,6 +1,7 @@
 require "converse/conversation_template"
 require "converse/conversation"
 require "converse/conversation_handler"
+require "converse/conversation_options_validator"
 require "converse/dsl"
 require "converse/factory"
 require "converse/streams"
