@@ -1,8 +1,14 @@
 module Converse
   class Conversation
-    attr_reader :channel_id, :current_step, :user_id
+    attr_reader :channel_id, :current_step, :options, :user_id
 
-    def initialize(&block)
+    # TODO: Need the author user id to stop from echoing it's messages
+    # TODO: Need the access token - should this be done in this constructor
+    # with the ability to specify a template instead of a block? - Meaning
+    # should templates be generic and conversations be instances of the
+    # started conversations?
+    def initialize(options={}, &block)
+      @options = options
       @current_step = block
     end
 
@@ -11,13 +17,16 @@ module Converse
       @current_step = block
     end
 
-    def say(statement)
+    def say(statement, options={})
       # TODO: Make this configurable
-      Converse::Streams::Slack.new.puts statement, channel_id, user_id
+      token = options[:access_token]
+      Converse::Streams::Slack.new(token).puts statement, channel_id, user_id
     end
     alias_method :reply, :say
 
     def start(message)
+      # TODO: Guard against the message from this bot
+
       unless Converse.conversation_registered? self
         # TODO: Wrap the message in a Slack decorator
         @channel_id = message.channel

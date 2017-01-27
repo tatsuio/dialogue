@@ -7,6 +7,12 @@ RSpec.describe Converse::Conversation do
 
       expect(described_class.new(&proc).current_step).to eq proc
     end
+
+    it "can initialize with valid options" do
+      options = { access_token: "BLAH" }
+
+      expect(described_class.new(options).options).to eq options
+    end
   end
 
   describe "#ask" do
