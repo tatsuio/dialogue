@@ -1,7 +1,4 @@
 module Converse
-  class InvalidOptionsError < RuntimeError
-  end
-
   class Conversation
     attr_reader :channel_id, :current_step, :user_id
 
