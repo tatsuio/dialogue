@@ -1,3 +1,4 @@
+require "eventmachine"
 require "singleton"
 
 module Converse
