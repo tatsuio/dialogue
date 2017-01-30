@@ -8,7 +8,7 @@ RSpec.describe Converse::DSL do
       subject.on :blah
 
       expect(Converse.conversations.length).to eq 1
-      expect(Converse.conversations.first.intent).to eq :blah
+      expect(Converse.conversations.first.name).to eq :blah
     end
   end
 
