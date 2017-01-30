@@ -2,27 +2,37 @@ RSpec.describe Converse::Conversation do
   include Converse::Test::SlackClientStubbing
 
   describe "#initialize" do
-    it "can initialize with a block" do
-      proc = Proc.new { }
+    let(:proc) { Proc.new {} }
+    let(:template) { Converse::ConversationTemplate.new &proc }
+    subject { described_class.new template }
 
-      expect(described_class.new(&proc).current_step).to eq proc
+    it "is initialized with a template" do
+      expect(subject.template).to eq template
+    end
+
+    it "sets the current step to the template" do
+      expect(subject.current_step).to eq proc
+    end
+
+    it "adds itself to the factory" do
+      expect(Converse::ConversationFactory.conversations).to include subject
     end
 
     context "valid options" do
       it "allows for empty options" do
-        expect { described_class.new({}) }.to_not raise_error
+        expect { described_class.new(template, {}) }.to_not raise_error
       end
 
       it "allows for an access token" do
-        expect { described_class.new({ access_token: "BLAH" }) }.to_not raise_error
+        expect { described_class.new(template, { access_token: "BLAH" }) }.to_not raise_error
       end
 
       it "allows for an author id" do
-        expect { described_class.new({ author_id: "BLAH" }) }.to_not raise_error
+        expect { described_class.new(template, { author_id: "BLAH" }) }.to_not raise_error
       end
 
       it "allows the options to respond as methods on the conversation" do
-        subject = described_class.new({ author_id: "BLAH" })
+        subject = described_class.new(template, { author_id: "BLAH" })
 
         expect(subject.author_id).to eq "BLAH"
       end
@@ -34,7 +44,7 @@ RSpec.describe Converse::Conversation do
 
     context "invalid options" do
       it "does not allow for random options" do
-        expect { described_class.new({ blah: :bleh }) }.to \
+        expect { described_class.new(template, { blah: :bleh }) }.to \
           raise_error Converse::InvalidOptionsError, "blah is not a valid option"
       end
     end
@@ -64,6 +74,19 @@ RSpec.describe Converse::Conversation do
     end
   end
 
+  describe ".build" do
+    let(:name) { :template_one }
+    let(:proc) { Proc.new {} }
+
+    it "instantiates a new ConversationTemplate" do
+      result = described_class.build name, &proc
+
+      expect(result).to be_kind_of Converse::ConversationTemplate
+      expect(result.name).to eq name
+      expect(result.template).to eq proc
+    end
+  end
+
   describe "say" do
     let(:channel_id) { nil }
     let(:user_id) { nil }
@@ -83,6 +106,8 @@ RSpec.describe Converse::Conversation do
   describe "#start" do
     let(:channel_id) { "C12345" }
     let(:message) { double(:message, user: user_id, channel: channel_id) }
+    let(:proc) { Proc.new {} }
+    let(:template) { Converse::ConversationTemplate.new &proc }
     let(:user_id) { "U12345" }
 
     before { Converse.clear_conversations }
@@ -103,7 +128,8 @@ RSpec.describe Converse::Conversation do
 
     it "performs the current step" do
       ran = false
-      subject = described_class.new { ran = true }
+      template = Converse::ConversationTemplate.new { ran = true }
+      subject = described_class.new template
 
       subject.start message
 
@@ -112,7 +138,8 @@ RSpec.describe Converse::Conversation do
 
     it "passes the conversation when the current step is performed" do
       conversation = nil
-      subject = described_class.new { |c| conversation = c }
+      template = Converse::ConversationTemplate.new { |c| conversation = c }
+      subject = described_class.new template
 
       subject.start message
 
@@ -132,8 +159,7 @@ RSpec.describe Converse::Conversation do
     end
 
     context "with a message from the author" do
-      let(:proc) { Proc.new {} }
-      subject { described_class.new(author_id: "BOT", &proc) }
+      subject { described_class.new(template, author_id: "BOT") }
 
       before { allow(message).to receive(:user).and_return "BOT" }
 

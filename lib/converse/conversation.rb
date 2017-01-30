@@ -1,17 +1,26 @@
 module Converse
   class Conversation
-    attr_reader :channel_id, :current_step, :user_id
+    attr_reader :channel_id, :current_step, :template, :user_id
 
-    def initialize(options={}, &block)
+    def initialize(template=nil, options={})
       guard_options! options
 
+      @template = template
+      @current_step = @template&.template
       @options = options.freeze
-      @current_step = block
+
+      # TODO: Ensure conversation is not already registered
+      # ...or do this on start??
+      ConversationFactory.conversations << self
     end
 
     def ask(question, &block)
       say question
       @current_step = block
+    end
+
+    def self.build(name=nil, &block)
+      ConversationTemplate.build name, &block
     end
 
     def method_missing(method, *args)
