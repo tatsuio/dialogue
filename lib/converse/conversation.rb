@@ -1,5 +1,7 @@
 module Converse
   class Conversation
+    include ConversationOptions
+
     attr_accessor :channel_id, :user_id
     attr_reader :steps, :template
 
@@ -17,11 +19,6 @@ module Converse
       steps << block
     end
 
-    def method_missing(method, *args)
-      return options.fetch method if options.key? method
-      super
-    end
-
     def perform
       step = steps.pop
       step.call self unless step.nil?
@@ -32,14 +29,5 @@ module Converse
       Converse::Streams::Slack.new(options[:access_token]).puts statement, channel_id, user_id
     end
     alias_method :reply, :say
-
-    private
-
-    attr_reader :options
-
-    def guard_options!(options)
-      result = ConversationOptionsValidator.new.validate options
-      raise InvalidOptionsError.new(result.error_messages) unless result.success?
-    end
   end
 end

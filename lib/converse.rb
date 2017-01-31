@@ -1,3 +1,4 @@
+require "converse/conversation_options"
 require "converse/conversation_template"
 require "converse/conversation_template_runner"
 require "converse/conversation"

@@ -1,8 +1,12 @@
 module Converse
   class ConversationTemplateRunner
+    include ConversationOptions
+
     attr_reader :message, :options
 
     def initialize(message, options={})
+      guard_options! options
+
       @message = message
       @options = options.freeze
     end
