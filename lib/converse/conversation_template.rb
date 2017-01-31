@@ -13,17 +13,7 @@ module Converse
     end
 
     def start(message, options={})
-      # TODO: A runner should run this
-      # ConversationTemplateRunner.new(message, options).run
-
-      decorated_message = MessageDecorators::Slack.new(message)
-
-      if Converse.conversation_registered? decorated_message.user_id, decorated_message.channel_id
-        Converse.find_conversation(decorated_message.user_id, decorated_message.channel_id)
-          .continue decorated_message
-      else
-        Conversation.new(self, options).start(decorated_message)
-      end
+      ConversationTemplateRunner.new(message, options).run self
     end
   end
 end

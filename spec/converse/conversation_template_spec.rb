@@ -35,22 +35,13 @@ RSpec.describe Converse::ConversationTemplate do
 
   describe "#start" do
     let(:channel_id) { "CHANNEL1" }
-    let(:conversation) { double(:conversation, user_id: user_id, channel_id: channel_id) }
     let(:message) { double(:message, user: user_id, channel: channel_id) }
     let(:user_id) { "USER1" }
 
-    after { Converse.conversations.clear }
-
-    it "creates a new conversation if it does not exist" do
-      expect(Converse::Conversation).to receive(:new).with(subject, {}).and_call_original
-
-      subject.start message
-    end
-
-    it "continues the conversation if it's already registered" do
-      Converse.register_conversation conversation
-
-      expect(conversation).to receive(:continue).with(Converse::MessageDecorators::Slack)
+    it "delegates the creation of the conversation to the template runner" do
+      expect(Converse::ConversationTemplateRunner).to receive(:new).with(message, {})
+        .and_call_original
+      expect_any_instance_of(Converse::ConversationTemplateRunner).to receive(:run).with(subject)
 
       subject.start message
     end
