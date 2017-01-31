@@ -33,22 +33,6 @@ module Converse
     end
     alias_method :reply, :say
 
-    def start(message)
-      unless message_from_author?(message)
-        @channel_id = message.channel_id
-        @user_id = message.user_id
-
-        unless Converse.conversation_registered?(user_id, channel_id)
-          Converse.register_conversation(self)
-        end
-
-        perform
-      end
-
-      self
-    end
-    alias_method :continue, :start
-
     private
 
     attr_reader :options
@@ -56,10 +40,6 @@ module Converse
     def guard_options!(options)
       result = ConversationOptionsValidator.new.validate options
       raise InvalidOptionsError.new(result.error_messages) unless result.success?
-    end
-
-    def message_from_author?(message)
-      message.user_id == options[:author_id] && (channel_id.nil? || message.channel_id == channel_id)
     end
   end
 end
