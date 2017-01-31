@@ -34,8 +34,8 @@ module Converse
 
     def start(message)
       unless message_from_author?(message)
-        @channel_id = message.channel
-        @user_id = message.user
+        @channel_id = message.channel_id
+        @user_id = message.user_id
 
         unless Converse.conversation_registered?(user_id, channel_id)
           # TODO: Register this conversation in the Template (Runner)
@@ -59,7 +59,7 @@ module Converse
     end
 
     def message_from_author?(message)
-      message.user == options[:author_id] && (channel_id.nil? || message.channel == channel_id)
+      message.user_id == options[:author_id] && (channel_id.nil? || message.channel_id == channel_id)
     end
   end
 end

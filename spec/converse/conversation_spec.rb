@@ -88,7 +88,7 @@ RSpec.describe Converse::Conversation do
 
   describe "#start" do
     let(:channel_id) { "C12345" }
-    let(:message) { double(:message, user: user_id, channel: channel_id) }
+    let(:message) { double(:decorated_message, user_id: user_id, channel_id: channel_id) }
     let(:proc) { Proc.new {} }
     let(:template) { Converse::ConversationTemplate.new &proc }
     let(:user_id) { "U12345" }
@@ -144,7 +144,7 @@ RSpec.describe Converse::Conversation do
     context "with a message from the author" do
       subject { described_class.new(template, author_id: "BOT") }
 
-      before { allow(message).to receive(:user).and_return "BOT" }
+      before { allow(message).to receive(:user_id).and_return "BOT" }
 
       it "skips the message" do
         expect(proc).to_not receive(:call)
