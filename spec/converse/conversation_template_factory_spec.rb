@@ -46,14 +46,14 @@ RSpec.describe Converse::TemplateFactory do
   describe "#registered?" do
     after { subject.templates.clear }
 
-    it "returns true if the template is registered" do
+    it "returns true if the template name is registered" do
       subject.register template
 
-      expect(subject).to be_registered template
+      expect(subject).to be_registered template.name
     end
 
     it "returns false if the template is not registered" do
-      expect(subject).to_not be_registered template
+      expect(subject).to_not be_registered template.name
     end
   end
 end

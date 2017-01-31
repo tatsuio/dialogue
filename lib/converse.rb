@@ -23,6 +23,10 @@ module Converse
       conversation_factory.conversations.clear
     end
 
+    def clear_templates
+      template_factory.templates.clear
+    end
+
     def conversation_registered?(user_id, channel_id)
       conversation_factory.registered? user_id, channel_id
     end
@@ -35,8 +39,24 @@ module Converse
       conversation_factory.find user_id, channel_id
     end
 
+    def find_template(name)
+      template_factory.find name
+    end
+
     def register_conversation(conversation)
-      conversation_factory.register(conversation)
+      conversation_factory.register conversation
+    end
+
+    def register_template(template)
+      template_factory.register template
+    end
+
+    def templates
+      template_factory.templates
+    end
+
+    def template_registered?(name)
+      template_factory.registered? name
     end
 
     def unregister_conversation(conversation)
@@ -47,6 +67,10 @@ module Converse
 
     def conversation_factory
       ConversationFactory.instance
+    end
+
+    def template_factory
+      TemplateFactory.instance
     end
   end
 end

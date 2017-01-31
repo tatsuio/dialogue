@@ -21,6 +21,18 @@ RSpec.describe Converse do
     end
   end
 
+  describe ".clear_templates" do
+    let(:template) { double(:template, name: "select_shirt") }
+
+    it "removes all the templates from memory" do
+      described_class.register_template template
+
+      described_class.clear_templates
+
+      expect(described_class.templates).to be_empty
+    end
+  end
+
   describe ".conversation_registered?" do
     it "delegates to the conversation factory" do
       expect(Converse::ConversationFactory.instance).to receive(:registered?).with "USER1", "CHANNEL1"
@@ -45,6 +57,14 @@ RSpec.describe Converse do
     end
   end
 
+  describe ".find_template" do
+    it "delegates to the template factory" do
+      expect(Converse::TemplateFactory.instance).to receive(:find).with "select_size"
+
+      described_class.find_template "select_size"
+    end
+  end
+
   describe ".register_conversation" do
     let(:conversation) { double(:conversation) }
 
@@ -52,6 +72,34 @@ RSpec.describe Converse do
       expect(Converse::ConversationFactory.instance).to receive(:register).with conversation
 
       described_class.register_conversation conversation
+    end
+  end
+
+  describe ".register_template" do
+    let(:template) { double(:template) }
+
+    it "delegates to the template factory" do
+      expect(Converse::TemplateFactory.instance).to receive(:register).with template
+
+      described_class.register_template template
+    end
+  end
+
+  describe ".templates" do
+    it "delegates to the template factory" do
+      expect(Converse::TemplateFactory.instance).to receive(:templates)
+
+      described_class.templates
+    end
+  end
+
+  describe ".template_registered?" do
+    let(:template) { double(:template, name: "select_shirt") }
+
+    it "delegates to the template factory" do
+      expect(Converse::TemplateFactory.instance).to receive(:registered?).with template.name
+
+      described_class.template_registered? template.name
     end
   end
 

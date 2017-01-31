@@ -15,12 +15,12 @@ module Converse
     end
 
     def register(template)
-      raise TemplateAlreadyRegisteredError.new(template) if registered?(template)
+      raise TemplateAlreadyRegisteredError.new(template) if registered?(template.name)
       templates << template
     end
 
-    def registered?(template)
-      !find(template.name).nil?
+    def registered?(name)
+      !find(name).nil?
     end
   end
 end
