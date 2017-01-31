@@ -17,7 +17,7 @@ module Converse
     end
 
     def register(conversation)
-      conversations << conversation
+      conversations << conversation unless registered?(conversation.user_id, conversation.channel_id)
     end
 
     def registered?(user_id, channel_id)

@@ -10,7 +10,7 @@ RSpec.describe Converse do
   end
 
   describe ".clear_conversations" do
-    let(:conversation) { double(:conversation) }
+    let(:conversation) { double(:conversation, user_id: "USER1", channel_id: "CHANNEL1") }
 
     it "removes all the conversations from memory" do
       described_class.register_conversation conversation
