@@ -8,9 +8,7 @@ module Converse
     end
 
     def self.build(name, &block)
-      template = ConversationTemplate.new name, &block
-      Converse.register_template template
-      template
+      ConversationTemplate.new name, &block
     end
 
     def start(message, options={})

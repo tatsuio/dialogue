@@ -34,12 +34,6 @@ RSpec.describe Converse::ConversationTemplate do
     it "takes in an optional thread name" do
       expect(described_class.build(:thread_one).name).to eq :thread_one
     end
-
-    it "is registered with the template factory" do
-      expect(Converse).to receive(:register_template).with(Converse::ConversationTemplate)
-
-      described_class.build :thread_one
-    end
   end
 
   describe "#start" do
