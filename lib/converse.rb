@@ -9,6 +9,8 @@ require "converse/dsl"
 require "converse/factory"
 require "converse/message_decorators"
 require "converse/streams"
+require "converse/template_already_registered_error"
+require "converse/template_factory"
 require "converse/version"
 
 module Converse
