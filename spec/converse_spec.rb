@@ -54,4 +54,14 @@ RSpec.describe Converse do
       described_class.register_conversation conversation
     end
   end
+
+  describe ".unregister_conversation" do
+    let(:conversation) { double(:conversation) }
+
+    it "delegates to the conversation factory" do
+      expect(Converse::Factory.instance).to receive(:unregister).with conversation
+
+      described_class.unregister_conversation conversation
+    end
+  end
 end

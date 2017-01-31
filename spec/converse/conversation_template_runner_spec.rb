@@ -31,7 +31,9 @@ RSpec.describe Converse::ConversationTemplateRunner do
       end
 
       it "adds the conversation to the factory" do
-        expect { subject.run template }.to change { Converse.conversations.count }.by(1)
+        expect(Converse).to receive(:register_conversation)
+
+        subject.run template
       end
 
       it "sets the user" do
@@ -66,7 +68,9 @@ RSpec.describe Converse::ConversationTemplateRunner do
       after { Converse.conversations.clear }
 
       it "does not add the conversation to the factory" do
-        expect { subject.run template }.to_not change { Converse.conversations.count }
+        expect(Converse).to_not receive(:register_conversation)
+
+        subject.run template
       end
 
       it "it continutes the conversation" do

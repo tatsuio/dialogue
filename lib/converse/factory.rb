@@ -23,5 +23,9 @@ module Converse
     def registered?(user_id, channel_id)
       !find(user_id, channel_id).nil?
     end
+
+    def unregister(conversation)
+      conversations.delete conversation
+    end
   end
 end

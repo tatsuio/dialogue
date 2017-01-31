@@ -37,6 +37,10 @@ module Converse
       factory.register(conversation)
     end
 
+    def unregister_conversation(conversation)
+      factory.unregister(conversation)
+    end
+
     private
 
     def factory

@@ -22,7 +22,7 @@ module Converse
     def perform
       step = steps.pop
       step.call self unless step.nil?
-      # TODO: Remove this from the factory if there are no more steps to perform
+      Converse.unregister_conversation self if steps.empty?
     end
 
     def say(statement)

@@ -39,7 +39,7 @@ RSpec.describe Converse::Conversation do
     end
   end
 
-  describe "say" do
+  describe "#say" do
     let(:channel_id) { nil }
     let(:user_id) { nil }
 
@@ -52,6 +52,18 @@ RSpec.describe Converse::Conversation do
         receive(:puts).with(statement, channel_id, user_id)
 
       subject.say statement
+    end
+  end
+
+  describe "#perform" do
+    let(:proc) { Proc.new {} }
+    let(:template) { Converse::ConversationTemplate.new &proc }
+    subject { described_class.new template }
+
+    it "removes itself from the conversations if there are no more steps" do
+      Converse.register_conversation subject
+
+      expect { subject.perform }.to change { Converse.conversations.count }.by -1
     end
   end
 end

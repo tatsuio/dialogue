@@ -57,4 +57,20 @@ RSpec.describe Converse::Factory do
       expect(subject).to_not be_registered user_id, channel_id
     end
   end
+
+  describe "#unregister" do
+    after { subject.conversations.clear }
+
+    it "is removed if the conversation with the user and channel exists" do
+      subject.register conversation
+
+      subject.unregister conversation
+
+      expect(subject).to_not be_registered user_id, channel_id
+    end
+
+    it "is not removed if the conversation with the user and channel does not exist" do
+      expect { subject.unregister conversation }.to_not change { subject.conversations.count }
+    end
+  end
 end
