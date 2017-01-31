@@ -70,19 +70,6 @@ RSpec.describe Converse::Conversation do
     end
   end
 
-  describe ".build" do
-    let(:name) { :template_one }
-    let(:proc) { Proc.new {} }
-
-    it "instantiates a new ConversationTemplate" do
-      result = described_class.build name, &proc
-
-      expect(result).to be_kind_of Converse::ConversationTemplate
-      expect(result.name).to eq name
-      expect(result.template).to eq proc
-    end
-  end
-
   describe "say" do
     let(:channel_id) { nil }
     let(:user_id) { nil }

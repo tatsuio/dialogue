@@ -16,10 +16,6 @@ module Converse
       steps << block
     end
 
-    def self.build(name=nil, &block)
-      ConversationTemplate.build name, &block
-    end
-
     def method_missing(method, *args)
       return options.fetch method if options.key? method
       super
