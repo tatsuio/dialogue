@@ -65,5 +65,14 @@ RSpec.describe Converse::Conversation do
 
       expect { subject.perform }.to change { Converse.conversations.count }.by -1
     end
+
+    it "yields the message" do
+      message = double(:message)
+      Converse.register_conversation subject
+
+      expect(proc).to receive(:call).with(subject, message)
+
+      subject.perform message
+    end
   end
 end

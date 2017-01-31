@@ -19,9 +19,9 @@ module Converse
       steps << block
     end
 
-    def perform
+    def perform(*args)
       step = steps.pop
-      step.call self unless step.nil?
+      step.call self, *args unless step.nil?
       Converse.unregister_conversation self if steps.empty?
     end
 
