@@ -13,7 +13,13 @@ module Converse
     end
 
     def start(message, options={})
-      Conversation.new(self, options).start message
+      # TODO: A runner should run this
+      # TODO: Wrap the message in a Slack decorator
+      if Converse.conversation_registered? message.user, message.channel
+        Converse.find_conversation(message.user, message.channel).continue message
+      else
+        Conversation.new(self, options).start(message)
+      end
     end
   end
 end

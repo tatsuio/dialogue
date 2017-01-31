@@ -11,11 +11,7 @@ RSpec.describe Converse::Conversation do
     end
 
     it "sets the current step to the template" do
-      expect(subject.current_step).to eq proc
-    end
-
-    it "adds itself to the factory" do
-      expect(Converse::ConversationFactory.conversations).to include subject
+      expect(subject.steps.first).to eq proc
     end
 
     context "valid options" do
@@ -61,7 +57,7 @@ RSpec.describe Converse::Conversation do
 
       subject.ask("Are you ok?", &proc)
 
-      expect(subject.current_step).to eq proc
+      expect(subject.steps.last).to eq proc
     end
 
     it "streams the message to slack by default" do

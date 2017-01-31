@@ -19,12 +19,16 @@ module Converse
       factory.conversations.clear
     end
 
-    def conversation_registered?(conversation)
-      factory.registered? conversation
+    def conversation_registered?(user_id, channel_id)
+      factory.registered? user_id, channel_id
     end
 
     def conversations
       factory.conversations
+    end
+
+    def find_conversation(user_id, channel_id)
+      factory.find user_id, channel_id
     end
 
     def factory

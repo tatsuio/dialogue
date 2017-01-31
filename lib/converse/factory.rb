@@ -10,19 +10,18 @@ module Converse
       @conversations = []
     end
 
-    def find(conversation)
+    def find(user_id, channel_id)
       conversations.find do |c|
-        c.channel_id == conversation.channel_id &&
-          c.user_id == conversation.user_id
-      end if !conversation.channel_id.nil? && !conversation.user_id.nil?
+        c.user_id == user_id && c.channel_id == channel_id
+      end if !user_id.nil? && !channel_id.nil?
     end
 
     def register(conversation)
       conversations << conversation
     end
 
-    def registered?(conversation)
-      !find(conversation).nil?
+    def registered?(user_id, channel_id)
+      !find(user_id, channel_id).nil?
     end
   end
 end
