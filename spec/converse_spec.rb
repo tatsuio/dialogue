@@ -20,4 +20,38 @@ RSpec.describe Converse do
       expect(described_class.conversations).to be_empty
     end
   end
+
+  describe ".conversation_registered?" do
+    it "delegates to the conversation factory" do
+      expect(Converse::Factory.instance).to receive(:registered?).with "USER1", "CHANNEL1"
+
+      described_class.conversation_registered? "USER1", "CHANNEL1"
+    end
+  end
+
+  describe ".conversations" do
+    it "delegates to the conversation factory" do
+      expect(Converse::Factory.instance).to receive(:conversations)
+
+      described_class.conversations
+    end
+  end
+
+  describe ".find_conversation" do
+    it "delegates to the conversation factory" do
+      expect(Converse::Factory.instance).to receive(:find).with "USER1", "CHANNEL1"
+
+      described_class.find_conversation "USER1", "CHANNEL1"
+    end
+  end
+
+  describe ".register_conversation" do
+    let(:conversation) { double(:conversation) }
+
+    it "delegates to the conversation factory" do
+      expect(Converse::Factory.instance).to receive(:register).with conversation
+
+      described_class.register_conversation conversation
+    end
+  end
 end

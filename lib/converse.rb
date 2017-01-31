@@ -30,12 +30,14 @@ module Converse
       factory.find user_id, channel_id
     end
 
-    def factory
-      Factory.instance
-    end
-
     def register_conversation(conversation)
       factory.register(conversation)
+    end
+
+    private
+
+    def factory
+      Factory.instance
     end
   end
 end
