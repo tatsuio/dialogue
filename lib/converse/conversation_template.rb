@@ -7,9 +7,10 @@ module Converse
       @template = block
     end
 
-    def self.build(name=nil, &block)
-      # TODO: Check for a unique name within the factory
-      ConversationTemplate.new name, &block
+    def self.build(name, &block)
+      template = ConversationTemplate.new name, &block
+      Converse.register_template template
+      template
     end
 
     def start(message, options={})
