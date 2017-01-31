@@ -23,7 +23,7 @@ RSpec.describe Converse do
 
   describe ".conversation_registered?" do
     it "delegates to the conversation factory" do
-      expect(Converse::Factory.instance).to receive(:registered?).with "USER1", "CHANNEL1"
+      expect(Converse::ConversationFactory.instance).to receive(:registered?).with "USER1", "CHANNEL1"
 
       described_class.conversation_registered? "USER1", "CHANNEL1"
     end
@@ -31,7 +31,7 @@ RSpec.describe Converse do
 
   describe ".conversations" do
     it "delegates to the conversation factory" do
-      expect(Converse::Factory.instance).to receive(:conversations)
+      expect(Converse::ConversationFactory.instance).to receive(:conversations)
 
       described_class.conversations
     end
@@ -39,7 +39,7 @@ RSpec.describe Converse do
 
   describe ".find_conversation" do
     it "delegates to the conversation factory" do
-      expect(Converse::Factory.instance).to receive(:find).with "USER1", "CHANNEL1"
+      expect(Converse::ConversationFactory.instance).to receive(:find).with "USER1", "CHANNEL1"
 
       described_class.find_conversation "USER1", "CHANNEL1"
     end
@@ -49,7 +49,7 @@ RSpec.describe Converse do
     let(:conversation) { double(:conversation) }
 
     it "delegates to the conversation factory" do
-      expect(Converse::Factory.instance).to receive(:register).with conversation
+      expect(Converse::ConversationFactory.instance).to receive(:register).with conversation
 
       described_class.register_conversation conversation
     end
@@ -59,7 +59,7 @@ RSpec.describe Converse do
     let(:conversation) { double(:conversation) }
 
     it "delegates to the conversation factory" do
-      expect(Converse::Factory.instance).to receive(:unregister).with conversation
+      expect(Converse::ConversationFactory.instance).to receive(:unregister).with conversation
 
       described_class.unregister_conversation conversation
     end

@@ -1,7 +1,7 @@
 require "singleton"
 
 module Converse
-  class Factory
+  class ConversationFactory
     include Singleton
 
     attr_reader :conversations
