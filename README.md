@@ -17,7 +17,9 @@ A conversation wraps the message and is comprised of several handlers. Each `Con
 
 ```
 Converse.build do
-  on(:start) do |conversation|
+  name :select_size
+  configure { access_token: ENV["SLACK_ACCESS_TOKEN"] }
+  conversation do |conversation|
     conversation.ask("What size do you wear?") do |response, conversation|
       conversation.reply("Gotcha. Size #{response.reply}. Noted.")
       conversation.ask("What color would you like?") do |response, conversation|
@@ -46,14 +48,27 @@ A conversation can `timeout`.
 A `message` comes in from somewhere and you can handle that message in a conversation. A `message` has a `user_id` and a `channel_id` along with some text. If the message matches one of the stored conversations (meaning the user id and channel id match), then the conversation is continued where it left off. If the conversation is not found, then a new conversation is started.
 
 ```
-conversation = Converse::Conversation.new(message)
-conversation.handle(message) if conversation.can_be_handled?
+Converse.find_template(:select_size).start message
 ```
 
-The `Conversation` can be handled if the intent (via the `on` methods) is found in one of the factories.
+```
+Converse.handle(message) # Will find a template based on intent of the message
+```
+
+This will register the conversation for the user and channel with the factory and activate the conversation.
+
+## TODO:
+
+- [ ] Add DSL to `Converse` that allows you to specify templates with a name, a list of intents, and a template
+- [ ] Implement `ConversationHandler` that handles a message based on an intent
+- [ ] Add pluggable intent handlers (Api.ai, Wit.ai, etc)
+- [ ] Implement `ConversationRouter`
+- [ ] Add timeouts for conversations
+- [ ] Add support for Facebook
+- [ ] Add support for persistent conversations (serializable proc)
 
 ## LICENSE
 
-Copyright (c) 2016, [Tatsu, LLC](http://tatsu.io).
+Copyright (c) 2016, [Tatsu, Inc.](http://tatsu.io).
 
 This project is licensed under the [MIT License](LICENSE.md).
