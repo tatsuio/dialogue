@@ -1,4 +1,5 @@
 require "converse/conversation_template"
+require "converse/conversation_template_runner"
 require "converse/conversation"
 require "converse/conversation_handler"
 require "converse/conversation_options_validator"

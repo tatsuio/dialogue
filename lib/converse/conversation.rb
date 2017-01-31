@@ -1,6 +1,7 @@
 module Converse
   class Conversation
-    attr_reader :channel_id, :steps, :template, :user_id
+    attr_accessor :channel_id, :user_id
+    attr_reader :steps, :template
 
     def initialize(template=nil, options={})
       guard_options! options
@@ -38,7 +39,6 @@ module Converse
         @user_id = message.user_id
 
         unless Converse.conversation_registered?(user_id, channel_id)
-          # TODO: Register this conversation in the Template (Runner)
           Converse.register_conversation(self)
         end
 

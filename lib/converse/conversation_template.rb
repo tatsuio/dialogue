@@ -14,6 +14,7 @@ module Converse
 
     def start(message, options={})
       # TODO: A runner should run this
+      # ConversationTemplateRunner.new(message, options).run
 
       decorated_message = MessageDecorators::Slack.new(message)
 
