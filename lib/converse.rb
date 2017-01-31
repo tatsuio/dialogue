@@ -5,6 +5,7 @@ require "converse/conversation_options_validator"
 require "converse/invalid_options_error"
 require "converse/dsl"
 require "converse/factory"
+require "converse/message_decorators"
 require "converse/streams"
 require "converse/version"
 
