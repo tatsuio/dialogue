@@ -14,8 +14,8 @@ module Converse
       @options = options.freeze
     end
 
-    def ask(question, options={}, &block)
-      say question, options
+    def ask(question, opts={}, &block)
+      say question, opts
       steps << block
     end
 
@@ -25,9 +25,9 @@ module Converse
       Converse.unregister_conversation self if steps.empty?
     end
 
-    def say(statement, options={})
+    def say(statement, opts={})
       Converse::Streams::Slack.new(options[:access_token])
-        .puts statement, channel_id, user_id, options
+        .puts statement, channel_id, user_id, opts
     end
     alias_method :reply, :say
   end
