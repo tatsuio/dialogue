@@ -33,7 +33,7 @@ RSpec.describe Converse::Conversation do
       question = "Are you ok?"
 
       expect_any_instance_of(Converse::Streams::Slack).to \
-        receive(:puts).with(question, channel_id, user_id)
+        receive(:puts).with(question, channel_id, user_id, {})
 
       subject.ask question
     end
@@ -49,7 +49,7 @@ RSpec.describe Converse::Conversation do
       statement = "Hello world"
 
       expect_any_instance_of(Converse::Streams::Slack).to \
-        receive(:puts).with(statement, channel_id, user_id)
+        receive(:puts).with(statement, channel_id, user_id, {})
 
       subject.say statement
     end
