@@ -16,9 +16,17 @@ RSpec.describe Converse::Streams::Slack do
     it "posts the message to slack to the user and channel" do
       expect_any_instance_of(Slack::Web::Client).to \
         receive(:chat_postMessage).with(channel: channel_id, as_user: true,
-                                        text: "<@#{user_id}> #{statement}")
+                                        text: statement)
 
         subject.puts statement, channel_id, user_id
+    end
+
+    it "can post the message as a direct mention" do
+      expect_any_instance_of(Slack::Web::Client).to \
+        receive(:chat_postMessage).with(channel: channel_id, as_user: true,
+                                        text: "<@#{user_id}> #{statement}")
+
+      subject.puts statement, channel_id, user_id, { direct_mention: true }
     end
   end
 end
