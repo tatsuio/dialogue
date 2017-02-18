@@ -15,7 +15,7 @@ A conversation wraps the message and is comprised of several handlers. Each `Con
 
 #### Defining conversations inline
 
-```
+```ruby
 Converse.build do
   name :select_size
   configure { access_token: ENV["SLACK_ACCESS_TOKEN"] }
@@ -47,11 +47,11 @@ A conversation can `timeout`.
 
 A `message` comes in from somewhere and you can handle that message in a conversation. A `message` has a `user_id` and a `channel_id` along with some text. If the message matches one of the stored conversations (meaning the user id and channel id match), then the conversation is continued where it left off. If the conversation is not found, then a new conversation is started.
 
-```
+```ruby
 Converse.find_template(:select_size).start message
 ```
 
-```
+```ruby
 Converse.handle(message) # Will find a template based on intent of the message
 ```
 
