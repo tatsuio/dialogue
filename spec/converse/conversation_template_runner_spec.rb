@@ -1,9 +1,10 @@
 RSpec.describe Converse::ConversationTemplateRunner do
   let(:author_id) { "BOT" }
   let(:channel_id) { "CHANNEL1" }
-  let(:message) { double(:message, user: user_id, channel: channel_id) }
+  let(:message) { double(:message, user: user_id, channel: channel_id, team: team_id) }
   let(:options) {{ author_id: author_id }}
   let(:template) { double(:conversation_template, template: Proc.new {}) }
+  let(:team_id) { "TEAM1" }
   let(:user_id) { "USER1" }
   subject { described_class.new message, options }
 
@@ -46,6 +47,13 @@ RSpec.describe Converse::ConversationTemplateRunner do
       it "sets the channel" do
         expect_any_instance_of(Converse::Conversation).to \
           receive(:channel_id=).with(channel_id).and_call_original
+
+        subject.run template
+      end
+
+      it "sets the team" do
+        expect_any_instance_of(Converse::Conversation).to \
+          receive(:team_id=).with(team_id).and_call_original
 
         subject.run template
       end

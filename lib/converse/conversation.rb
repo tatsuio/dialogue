@@ -2,7 +2,7 @@ module Converse
   class Conversation
     include ConversationOptions
 
-    attr_accessor :channel_id, :user_id
+    attr_accessor :channel_id, :team_id, :user_id
     attr_reader :steps, :template
 
     def initialize(template=nil, options={})

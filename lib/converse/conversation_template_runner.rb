@@ -30,6 +30,7 @@ module Converse
         else
           conversation = Conversation.new template, options
           conversation.channel_id = channel_id
+          conversation.team_id = team_id
           conversation.user_id = user_id
 
           Converse.register_conversation conversation
@@ -37,6 +38,10 @@ module Converse
 
         conversation.perform message
       end
+    end
+
+    def team_id
+      decorated_message.team_id
     end
 
     def user_id
