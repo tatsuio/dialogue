@@ -1,6 +1,7 @@
 RSpec.describe Converse::MessageDecorators::Slack do
   let(:channel_id) { "CHANNEL1" }
-  let(:message) { double(:message, user: user_id, channel: channel_id) }
+  let(:message) { double(:message, user: user_id, channel: channel_id, team: team_id) }
+  let(:team_id) { "TEAM1" }
   let(:user_id) { "USER1" }
   subject { described_class.new(message) }
 
@@ -13,6 +14,18 @@ RSpec.describe Converse::MessageDecorators::Slack do
   describe "#channel_id" do
     it "returns the channel from the original message" do
       expect(subject.channel_id).to eq channel_id
+    end
+  end
+
+  describe "#team_id" do
+    it "returns the team from the original message" do
+      expect(subject.team_id).to eq team_id
+    end
+
+    it "returns the source team from the original message if the team is not present" do
+      allow(message).to receive_messages(team: nil, source_team: team_id)
+
+      expect(subject.team_id).to eq team_id
     end
   end
 

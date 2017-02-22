@@ -11,6 +11,10 @@ module Converse
         original_message.channel
       end
 
+      def team_id
+        original_message.team || original_message.source_team
+      end
+
       def user_id
         original_message.user
       end
