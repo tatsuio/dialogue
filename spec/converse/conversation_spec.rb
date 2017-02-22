@@ -39,6 +39,24 @@ RSpec.describe Converse::Conversation do
     end
   end
 
+  describe "#end" do
+    let(:proc) { Proc.new {} }
+    let(:template) { Converse::ConversationTemplate.new &proc }
+    subject { described_class.new template }
+
+    it "removes itself from the conversations" do
+      Converse.register_conversation subject
+
+      expect { subject.end }.to change { Converse.conversations.count }.by -1
+    end
+
+    it "can optionally say the last word" do
+      expect(subject).to receive(:say).with "Bye-bye"
+
+      subject.end "Bye-bye"
+    end
+  end
+
   describe "#say" do
     let(:channel_id) { nil }
     let(:user_id) { nil }

@@ -19,11 +19,17 @@ module Converse
       steps << block
     end
 
+    def end(statement=nil)
+      say statement unless statement.nil?
+      Converse.unregister_conversation self
+    end
+
     def perform(*args)
       step = steps.pop
       step.call self, *args unless step.nil?
       Converse.unregister_conversation self if steps.empty?
     end
+    alias_method :continue, :perform
 
     def say(statement, opts={})
       Converse::Streams::Slack.new(options[:access_token])
