@@ -39,6 +39,12 @@ RSpec.describe Converse::Conversation do
     end
   end
 
+  describe "#data" do
+    it "is initialized with an empty hash" do
+      expect(subject.data).to be_empty
+    end
+  end
+
   describe "#end" do
     let(:proc) { Proc.new {} }
     let(:template) { Converse::ConversationTemplate.new &proc }
@@ -57,6 +63,26 @@ RSpec.describe Converse::Conversation do
     end
   end
 
+  describe "#fetch" do
+    it "returns the value for the key in data" do
+      subject.store!(data: :blah)
+
+      expect(subject.fetch(:data)).to eq :blah
+    end
+
+    it "returns nil if the key is not found" do
+      expect(subject.fetch(:data)).to be_nil
+    end
+
+    it "returns an optional default value" do
+      expect(subject.fetch(:data, "go fish")).to eq "go fish"
+    end
+
+    it "returns the result of the block if provided" do
+      expect(subject.fetch(:data) { "go fish" }).to eq "go fish"
+    end
+  end
+
   describe "#say" do
     let(:channel_id) { nil }
     let(:user_id) { nil }
@@ -70,6 +96,14 @@ RSpec.describe Converse::Conversation do
         receive(:puts).with(statement, channel_id, user_id, {})
 
       subject.say statement
+    end
+  end
+
+  describe "#store!" do
+    it "stores some data" do
+      subject.store!(data: :blah)
+
+      expect(subject.data).to eq({ data: :blah })
     end
   end
 

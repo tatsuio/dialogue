@@ -1,6 +1,9 @@
+require "converse/storable"
+
 module Converse
   class Conversation
     include ConversationOptions
+    include Storable
 
     attr_accessor :channel_id, :team_id, :user_id
     attr_reader :steps, :template
