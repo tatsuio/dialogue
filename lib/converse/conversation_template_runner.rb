@@ -33,7 +33,7 @@ module Converse
           Converse.register_conversation conversation
         end
 
-        conversation.perform message
+        conversation.perform
       end
     end
 

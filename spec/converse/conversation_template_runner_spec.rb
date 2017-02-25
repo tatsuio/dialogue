@@ -40,7 +40,7 @@ RSpec.describe Converse::ConversationTemplateRunner do
       end
 
       it "performs the conversation" do
-        expect_any_instance_of(Converse::Conversation).to receive(:perform).with message
+        expect_any_instance_of(Converse::Conversation).to receive(:perform)
 
         subject.run template
       end
