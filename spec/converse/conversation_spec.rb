@@ -3,8 +3,9 @@ RSpec.describe Converse::Conversation do
 
   describe "#initialize" do
     let(:proc) { Proc.new {} }
+    let(:message) { double(:message, channel_id: "C1", team_id: "T1", user_id: "U1") }
     let(:template) { Converse::ConversationTemplate.new &proc }
-    subject { described_class.new template }
+    subject { described_class.new template, message }
 
     it "is initialized with a template" do
       expect(subject.template).to eq template
@@ -12,6 +13,22 @@ RSpec.describe Converse::Conversation do
 
     it "sets the current step to the template" do
       expect(subject.steps.first).to eq proc
+    end
+
+    it "is initialized with a decorated message" do
+      expect(subject.message).to eq message
+    end
+
+    it "sets the channel id" do
+      expect(subject.channel_id).to eq "C1"
+    end
+
+    it "sets the team id" do
+      expect(subject.team_id).to eq "T1"
+    end
+
+    it "sets the user id" do
+      expect(subject.user_id).to eq "U1"
     end
   end
 
@@ -43,6 +60,22 @@ RSpec.describe Converse::Conversation do
     it "is initialized with an empty hash" do
       expect(subject.data).to be_empty
     end
+  end
+
+  describe "#diverge" do
+    let(:another_template) { double(:template, name: :another_conversation) }
+
+    xit "finds the conversation by name" do
+      template = Converse::ConversationTemplate.build(:another_conversation)
+      Converse.register_template template
+
+      conversation = subject.diverge :another_conversation
+
+      expect(conversation.template).to eq template
+    end
+
+    xit "calls the conversation with the channel and user"
+    xit "does nothing if the conversation doesn't exist"
   end
 
   describe "#end" do

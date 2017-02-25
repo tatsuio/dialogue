@@ -26,7 +26,8 @@ RSpec.describe Converse::ConversationTemplateRunner do
       after { Converse.conversations.clear }
 
       it "it creates a conversation" do
-        expect(Converse::Conversation).to receive(:new).with(template, options).and_call_original
+        expect(Converse::Conversation).to receive(:new).with(template, nil, options)
+          .and_call_original
 
         subject.run template
       end
@@ -66,7 +67,7 @@ RSpec.describe Converse::ConversationTemplateRunner do
     end
 
     context "with a registered conversation" do
-      let(:conversation) { Converse::Conversation.new template, options }
+      let(:conversation) { Converse::Conversation.new template, nil, options }
 
       before do
         conversation.user_id = user_id

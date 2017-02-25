@@ -6,20 +6,35 @@ module Converse
     include Storable
 
     attr_accessor :channel_id, :team_id, :user_id
-    attr_reader :steps, :template
+    attr_reader :message, :steps, :template
 
-    def initialize(template=nil, options={})
+    def initialize(template=nil, message=nil, options={})
       guard_options! options
 
-      @steps = []
       @template = template
+      @steps = []
       @steps << @template.template unless @template.nil?
+
+      @message = message
+      unless @message.nil?
+        @channel_id = message.channel_id
+        @team_id = message.team_id
+        @user_id = message.user_id
+      end
+
       @options = options.freeze
     end
 
     def ask(question, opts={}, &block)
       say question, opts
       steps << block
+    end
+
+    def diverge(template_name)
+      template = Converse.find_template template_name
+      # TODO: Pass in the decorated message from the runner in the
+      # initializer and store that
+      template.start nil, options
     end
 
     def end(statement=nil)
