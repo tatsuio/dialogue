@@ -39,27 +39,6 @@ RSpec.describe Converse::ConversationTemplateRunner do
         subject.run template
       end
 
-      it "sets the user" do
-        expect_any_instance_of(Converse::Conversation).to \
-          receive(:user_id=).with(user_id).and_call_original
-
-        subject.run template
-      end
-
-      it "sets the channel" do
-        expect_any_instance_of(Converse::Conversation).to \
-          receive(:channel_id=).with(channel_id).and_call_original
-
-        subject.run template
-      end
-
-      it "sets the team" do
-        expect_any_instance_of(Converse::Conversation).to \
-          receive(:team_id=).with(team_id).and_call_original
-
-        subject.run template
-      end
-
       it "performs the conversation" do
         expect_any_instance_of(Converse::Conversation).to receive(:perform).with message
 
