@@ -1,11 +1,13 @@
 RSpec.describe Converse::Conversation do
   include Converse::Test::SlackClientStubbing
 
+  let(:decorated_message) { Converse::MessageDecorators::Slack.new(message) }
+  let(:message) { double(:message, channel: "C1", team: "T1", user: "U1") }
+  let(:proc) { Proc.new {} }
+  let(:template) { Converse::ConversationTemplate.new &proc }
+
   describe "#initialize" do
-    let(:proc) { Proc.new {} }
-    let(:message) { double(:message, channel_id: "C1", team_id: "T1", user_id: "U1") }
-    let(:template) { Converse::ConversationTemplate.new &proc }
-    subject { described_class.new template, message }
+    subject { described_class.new template, decorated_message }
 
     it "is initialized with a template" do
       expect(subject.template).to eq template
@@ -16,7 +18,7 @@ RSpec.describe Converse::Conversation do
     end
 
     it "is initialized with a decorated message" do
-      expect(subject.message).to eq message
+      expect(subject.message).to eq decorated_message
     end
 
     it "sets the channel id" do
@@ -63,19 +65,32 @@ RSpec.describe Converse::Conversation do
   end
 
   describe "#diverge" do
-    let(:another_template) { double(:template, name: :another_conversation) }
+    let(:another_template) { Converse::ConversationTemplate.build(:another_template) }
+    subject { described_class.new template, decorated_message }
 
-    xit "finds the conversation by name" do
-      template = Converse::ConversationTemplate.build(:another_conversation)
-      Converse.register_template template
+    before { Converse.register_template another_template }
+    after { Converse.clear_templates }
 
-      conversation = subject.diverge :another_conversation
+    it "finds the conversation by name" do
+      conversation = subject.diverge :another_template
 
-      expect(conversation.template).to eq template
+      expect(conversation.template).to eq another_template
     end
 
-    xit "calls the conversation with the channel and user"
-    xit "does nothing if the conversation doesn't exist"
+    it "calls the conversation with the channel and user" do
+      expect_any_instance_of(described_class).to receive(:perform).and_call_original
+
+      conversation = subject.diverge :another_template
+
+      expect(conversation.channel_id).to eq "C1"
+      expect(conversation.team_id).to eq "T1"
+      expect(conversation.user_id).to eq "U1"
+    end
+
+    it "does nothing if the conversation doesn't exist" do
+      expect_any_instance_of(described_class).to_not receive(:perform)
+      expect { subject.diverge :blah }.to_not raise_error
+    end
   end
 
   describe "#end" do

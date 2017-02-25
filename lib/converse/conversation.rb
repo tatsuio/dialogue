@@ -32,9 +32,7 @@ module Converse
 
     def diverge(template_name)
       template = Converse.find_template template_name
-      # TODO: Pass in the decorated message from the runner in the
-      # initializer and store that
-      template.start nil, options
+      template.start message&.original_message, options unless template.nil?
     end
 
     def end(statement=nil)
