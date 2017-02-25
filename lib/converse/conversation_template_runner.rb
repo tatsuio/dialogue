@@ -28,7 +28,7 @@ module Converse
         if Converse.conversation_registered? user_id, channel_id
           conversation = Converse.find_conversation user_id, channel_id
         else
-          conversation = Conversation.new template, nil, options
+          conversation = Conversation.new template, decorated_message, options
           conversation.channel_id = channel_id
           conversation.team_id = team_id
           conversation.user_id = user_id
