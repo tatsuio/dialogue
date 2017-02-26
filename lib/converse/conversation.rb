@@ -6,14 +6,18 @@ module Converse
     include Storable
 
     attr_accessor :channel_id, :team_id, :user_id
-    attr_reader :message, :steps, :template
+    attr_reader :message, :steps, :templates
 
     def initialize(template=nil, message=nil, options={})
       guard_options! options
 
-      @template = template
+      @templates = []
       @steps = []
-      @steps << @template.template unless @template.nil?
+
+      unless template.nil?
+        @templates = [template]
+        @steps << template.template
+      end
 
       @message = message
       unless @message.nil?
@@ -32,7 +36,10 @@ module Converse
 
     def diverge(template_name)
       template = Converse.find_template template_name
-      template.start message&.original_message, options unless template.nil?
+      unless template.nil?
+        templates << template
+        steps.insert(0, template.template)
+      end
     end
 
     def end(statement=nil)

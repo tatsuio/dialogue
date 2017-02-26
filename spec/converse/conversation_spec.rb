@@ -10,7 +10,7 @@ RSpec.describe Converse::Conversation do
     subject { described_class.new template, decorated_message }
 
     it "is initialized with a template" do
-      expect(subject.template).to eq template
+      expect(subject.templates).to eq [template]
     end
 
     it "sets the current step to the template" do
@@ -65,26 +65,24 @@ RSpec.describe Converse::Conversation do
   end
 
   describe "#diverge" do
-    let(:another_template) { Converse::ConversationTemplate.build(:another_template) }
+    let(:another_proc) { Proc.new {} }
+    let(:another_template) { Converse::ConversationTemplate.build(:another_template,
+                                                                  &another_proc) }
     subject { described_class.new template, decorated_message }
 
     before { Converse.register_template another_template }
     after { Converse.clear_templates }
 
     it "finds the conversation by name" do
-      conversation = subject.diverge :another_template
+      subject.diverge :another_template
 
-      expect(conversation.template).to eq another_template
+      expect(subject.templates).to eq [template, another_template]
     end
 
-    it "calls the conversation with the channel and user" do
-      expect_any_instance_of(described_class).to receive(:perform).and_call_original
-
-      conversation = subject.diverge :another_template
-
-      expect(conversation.channel_id).to eq "C1"
-      expect(conversation.team_id).to eq "T1"
-      expect(conversation.user_id).to eq "U1"
+    it "adds the template steps to the top" do
+      expect { subject.diverge :another_template }.to \
+        change { subject.steps.length }.by 1
+      expect(subject.steps.first).to eq another_proc
     end
 
     it "does nothing if the conversation doesn't exist" do
