@@ -1,7 +1,6 @@
 RSpec.describe Converse::ConversationTemplate do
   describe ".build" do
     let(:name) { :thread_one }
-    after { Converse.clear_templates }
 
     it "returns a new instance of a template" do
       expect(described_class.build(name)).to be_kind_of Converse::ConversationTemplate
@@ -33,6 +32,21 @@ RSpec.describe Converse::ConversationTemplate do
 
     it "takes in an optional thread name" do
       expect(described_class.build(:thread_one).name).to eq :thread_one
+    end
+  end
+
+  describe "#register" do
+    subject { described_class.new }
+    after { Converse.clear_templates }
+
+    it "returns the template to enable chaining" do
+      expect(subject.register).to eq subject
+    end
+
+    it "registers the conversation with the factory" do
+      subject.register
+
+      expect(Converse.templates).to include subject
     end
   end
 

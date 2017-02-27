@@ -11,6 +11,11 @@ module Converse
       ConversationTemplate.new name, &block
     end
 
+    def register
+      Converse.register_template self
+      self
+    end
+
     def start(message, options={})
       ConversationTemplateRunner.new(message, options).run self
     end
