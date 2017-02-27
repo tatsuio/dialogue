@@ -38,7 +38,8 @@ module Converse
       template = Converse.find_template template_name
       unless template.nil?
         templates << template
-        steps.insert(0, template.template)
+        steps << template.template
+        perform
       end
     end
 

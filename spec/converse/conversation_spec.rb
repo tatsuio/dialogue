@@ -79,10 +79,10 @@ RSpec.describe Converse::Conversation do
       expect(subject.templates).to eq [template, another_template]
     end
 
-    it "adds the template steps to the top" do
-      expect { subject.diverge :another_template }.to \
-        change { subject.steps.length }.by 1
-      expect(subject.steps.first).to eq another_proc
+    it "performs the template steps" do
+      expect(another_proc).to receive(:call).with(subject)
+
+      subject.diverge :another_template
     end
 
     it "does nothing if the conversation doesn't exist" do
