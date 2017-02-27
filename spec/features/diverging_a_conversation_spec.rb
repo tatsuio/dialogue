@@ -4,7 +4,7 @@ RSpec.describe "diverging a conversation" do
 
   let(:message) { double(:message, user: "U1234", channel: "C1234", team: "T1234") }
 
-  before { stub_slack_chat }
+  before { stub_slack_chat true }
 
   describe "diverging from a simple conversation to a simple conversation" do
     it "runs the first step of the diverged conversation" do
