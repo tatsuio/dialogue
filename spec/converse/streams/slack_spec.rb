@@ -28,5 +28,16 @@ RSpec.describe Converse::Streams::Slack do
 
       subject.puts statement, channel_id, user_id, { direct_mention: true }
     end
+
+    it "can send attachments" do
+      expect_any_instance_of(Slack::Web::Client).to \
+        receive(:chat_postMessage).with(channel: channel_id, as_user: true,
+                                        text: nil, attachments: [{
+          text: "Here's an attachment!"
+        }])
+
+      subject.puts nil, channel_id, user_id,
+        { attachments: [{ text: "Here's an attachment!"}] }
+    end
   end
 end

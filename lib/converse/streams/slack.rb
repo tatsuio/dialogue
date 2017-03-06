@@ -12,6 +12,7 @@ module Converse
         text = output
         text = text.insert 0, "<@#{user_id}> " if opts[:direct_mention]
         options.merge!(text: text)
+        options.merge!(attachments: opts[:attachments]) if opts[:attachments]
         client.chat_postMessage options
       end
 
