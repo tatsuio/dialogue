@@ -56,9 +56,20 @@ module Converse
     alias_method :continue, :perform
 
     def say(statement, opts={})
+      ensure_registration
       Converse::Streams::Slack.new(options[:access_token])
         .puts statement, channel_id, user_id, opts
     end
     alias_method :reply, :say
+
+    private
+
+    def ensure_registration
+      # The conversation can be unregistered from a diverge, so let's ensure it
+      # is registered
+      if !Converse.conversation_registered? user_id, channel_id
+        Converse.register_conversation self
+      end
+    end
   end
 end

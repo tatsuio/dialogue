@@ -23,6 +23,7 @@ RSpec.describe "diverging a conversation" do
 
       answer_all_questions "XL", "black"
 
+      expect(Converse.conversations).to be_empty
       expect(stubbed_conversations.count).to eq 3
       expect(stubbed_conversations.first).to eq "What size t-shirt do you want?"
       expect(stubbed_conversations.second).to eq "What color t-shirt do you want?"
@@ -46,10 +47,31 @@ RSpec.describe "diverging a conversation" do
 
       answer_all_questions "XL", "black"
 
+      expect(Converse.conversations).to be_empty
       expect(stubbed_conversations.count).to eq 3
       expect(stubbed_conversations.first).to eq "What size t-shirt do you want?"
       expect(stubbed_conversations.second).to eq "What color t-shirt do you want?"
       expect(stubbed_conversations.third).to eq "Thank you!"
+    end
+  end
+
+  describe "diverging to simple step and then returning" do
+    it "runs the conversation after the diverge" do
+      Converse::ConversationTemplate.build(:ready_statement) do |convo|
+        convo.say "We are ready!"
+      end.register
+
+      Converse::ConversationTemplate.build(:retrieve_shirt_size) do |convo|
+        convo.diverge :ready_statement
+        convo.ask "What size t-shirt do you want?" do |convo, response|
+          convo.ask "What color t-shirt do you want?"
+        end
+      end.register.start message
+
+      answer_all_questions "XL", "black"
+
+      expect(Converse.conversations).to be_empty
+      expect(stubbed_conversations.count).to eq 3
     end
   end
 end
