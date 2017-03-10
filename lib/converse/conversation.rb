@@ -6,20 +6,41 @@ module Converse
     include Storable
 
     attr_accessor :channel_id, :team_id, :user_id
-    attr_reader :steps, :template
+    attr_reader :message, :steps, :templates
 
-    def initialize(template=nil, options={})
+    def initialize(template=nil, message=nil, options={})
       guard_options! options
 
+      @templates = []
       @steps = []
-      @template = template
-      @steps << @template.template unless @template.nil?
+
+      unless template.nil?
+        @templates = [template]
+        @steps << template.template
+      end
+
+      @message = message
+      unless @message.nil?
+        @channel_id = message.channel_id
+        @team_id = message.team_id
+        @user_id = message.user_id
+      end
+
       @options = options.freeze
     end
 
     def ask(question, opts={}, &block)
       say question, opts
       steps << block
+    end
+
+    def diverge(template_name)
+      template = Converse.find_template template_name
+      unless template.nil?
+        templates << template
+        steps << template.template
+        perform
+      end
     end
 
     def end(statement=nil)

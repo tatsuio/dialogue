@@ -1,17 +1,36 @@
 RSpec.describe Converse::Conversation do
   include Converse::Test::SlackClientStubbing
 
+  let(:decorated_message) { Converse::MessageDecorators::Slack.new(message) }
+  let(:message) { double(:message, channel: "C1", team: "T1", user: "U1") }
+  let(:proc) { Proc.new {} }
+  let(:template) { Converse::ConversationTemplate.new &proc }
+
   describe "#initialize" do
-    let(:proc) { Proc.new {} }
-    let(:template) { Converse::ConversationTemplate.new &proc }
-    subject { described_class.new template }
+    subject { described_class.new template, decorated_message }
 
     it "is initialized with a template" do
-      expect(subject.template).to eq template
+      expect(subject.templates).to eq [template]
     end
 
     it "sets the current step to the template" do
       expect(subject.steps.first).to eq proc
+    end
+
+    it "is initialized with a decorated message" do
+      expect(subject.message).to eq decorated_message
+    end
+
+    it "sets the channel id" do
+      expect(subject.channel_id).to eq "C1"
+    end
+
+    it "sets the team id" do
+      expect(subject.team_id).to eq "T1"
+    end
+
+    it "sets the user id" do
+      expect(subject.user_id).to eq "U1"
     end
   end
 
@@ -42,6 +61,33 @@ RSpec.describe Converse::Conversation do
   describe "#data" do
     it "is initialized with an empty hash" do
       expect(subject.data).to be_empty
+    end
+  end
+
+  describe "#diverge" do
+    let(:another_proc) { Proc.new {} }
+    let(:another_template) { Converse::ConversationTemplate.build(:another_template,
+                                                                  &another_proc) }
+    subject { described_class.new template, decorated_message }
+
+    before { Converse.register_template another_template }
+    after { Converse.clear_templates }
+
+    it "finds the conversation by name" do
+      subject.diverge :another_template
+
+      expect(subject.templates).to eq [template, another_template]
+    end
+
+    it "performs the template steps" do
+      expect(another_proc).to receive(:call).with(subject)
+
+      subject.diverge :another_template
+    end
+
+    it "does nothing if the conversation doesn't exist" do
+      expect_any_instance_of(described_class).to_not receive(:perform)
+      expect { subject.diverge :blah }.to_not raise_error
     end
   end
 

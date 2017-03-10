@@ -28,20 +28,13 @@ module Converse
         if Converse.conversation_registered? user_id, channel_id
           conversation = Converse.find_conversation user_id, channel_id
         else
-          conversation = Conversation.new template, options
-          conversation.channel_id = channel_id
-          conversation.team_id = team_id
-          conversation.user_id = user_id
+          conversation = Conversation.new template, decorated_message, options
 
           Converse.register_conversation conversation
         end
 
-        conversation.perform message
+        conversation.perform decorated_message
       end
-    end
-
-    def team_id
-      decorated_message.team_id
     end
 
     def user_id

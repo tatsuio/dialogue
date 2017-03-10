@@ -26,7 +26,9 @@ RSpec.describe Converse::ConversationTemplateRunner do
       after { Converse.conversations.clear }
 
       it "it creates a conversation" do
-        expect(Converse::Conversation).to receive(:new).with(template, options).and_call_original
+        expect(Converse::Conversation).to \
+          receive(:new).with(template, Converse::MessageDecorators::Slack, options)
+          .and_call_original
 
         subject.run template
       end
@@ -37,40 +39,18 @@ RSpec.describe Converse::ConversationTemplateRunner do
         subject.run template
       end
 
-      it "sets the user" do
-        expect_any_instance_of(Converse::Conversation).to \
-          receive(:user_id=).with(user_id).and_call_original
-
-        subject.run template
-      end
-
-      it "sets the channel" do
-        expect_any_instance_of(Converse::Conversation).to \
-          receive(:channel_id=).with(channel_id).and_call_original
-
-        subject.run template
-      end
-
-      it "sets the team" do
-        expect_any_instance_of(Converse::Conversation).to \
-          receive(:team_id=).with(team_id).and_call_original
-
-        subject.run template
-      end
-
       it "performs the conversation" do
-        expect_any_instance_of(Converse::Conversation).to receive(:perform).with message
+        expect_any_instance_of(Converse::Conversation).to receive(:perform)
 
         subject.run template
       end
     end
 
     context "with a registered conversation" do
-      let(:conversation) { Converse::Conversation.new template, options }
+      let(:conversation) { Converse::Conversation.new template, decorated_message, options }
+      let(:decorated_message) { Converse::MessageDecorators::Slack.new(message) }
 
       before do
-        conversation.user_id = user_id
-        conversation.channel_id = channel_id
         Converse.register_conversation conversation
       end
       after { Converse.conversations.clear }

@@ -16,24 +16,24 @@ A conversation wraps the message and is comprised of several handlers. Each `Con
 #### Defining conversations inline
 
 ```ruby
-Converse.build do
-  name :select_size
-  configure { access_token: ENV["SLACK_ACCESS_TOKEN"] }
-  conversation do |conversation|
-    conversation.ask("What size do you wear?") do |response, conversation|
-      conversation.reply("Gotcha. Size #{response.reply}. Noted.")
-      conversation.ask("What color would you like?") do |response, conversation|
-        conversation.reply("Great.")
-        conversation.continue
-      end
+Converse::ConversationTemplate.build(:order_shirt) do |conversation|
+  conversation.ask("What size do you wear?") do |response, conversation|
+    conversation.reply("Gotcha. Size #{response}. Noted.")
+    conversation.ask("What color would you like?") do |response, conversation|
+      conversation.reply("Great. I have you down for a #{response}.")
+      conversation.end("Thank you for your order.")
     end
   end
-end
+end.register
 ```
 
 You can `reply` to the conversation or `ask` the participant a question.
 
-You can move onto the next flow in the conversation with a `continue` method on a conversation.
+You can move onto a different conversation thread with a `diverge` followed by the name of the conversation.
+
+```
+conversation.diverge :end_order
+```
 
 You `start` a conversation which will store a `user`, a `channel`, and the conversation id. This is the placeholder for the conversation.
 

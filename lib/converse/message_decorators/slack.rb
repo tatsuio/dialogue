@@ -1,10 +1,11 @@
 module Converse
   module MessageDecorators
-    class Slack
+    class Slack < SimpleDelegator
       attr_reader :original_message
 
       def initialize(message)
         @original_message = message
+        __setobj__ @original_message
       end
 
       def channel_id

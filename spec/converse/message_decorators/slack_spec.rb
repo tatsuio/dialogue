@@ -34,4 +34,12 @@ RSpec.describe Converse::MessageDecorators::Slack do
       expect(subject.user_id).to eq user_id
     end
   end
+
+  describe "delegating" do
+    it "delegates any other messages to the original message" do
+      allow(message).to receive(:text).and_return "Text"
+
+      expect(subject.text).to eq "Text"
+    end
+  end
 end
