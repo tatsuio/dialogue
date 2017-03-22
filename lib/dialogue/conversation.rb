@@ -1,4 +1,4 @@
-require "converse/storable"
+require "dialogue/storable"
 
 module Converse
   class Conversation
