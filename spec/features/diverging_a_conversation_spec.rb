@@ -1,37 +1,37 @@
 RSpec.describe "diverging a conversation" do
-  include Converse::Test::ConversationHelpers
-  include Converse::Test::SlackClientStubbing
+  include Dialogue::Test::ConversationHelpers
+  include Dialogue::Test::SlackClientStubbing
 
   let(:message) { double(:message, user: "U1234", channel: "C1234", team: "T1234") }
 
   before { stub_slack_chat true }
-  after { Converse.clear_templates }
+  after { Dialogue.clear_templates }
 
   describe "diverging from a simple conversation to a simple conversation" do
     it "unregisters the conversation when it's complete" do
-      Converse::ConversationTemplate.build(:first_step) do |convo|
+      Dialogue::ConversationTemplate.build(:first_step) do |convo|
         convo.say "First step"
       end.register
 
-      Converse::ConversationTemplate.build(:second_step) do |convo|
+      Dialogue::ConversationTemplate.build(:second_step) do |convo|
         convo.diverge :first_step
         convo.say "Second step"
       end.register.start message
 
-      expect(Converse.conversations).to be_empty
+      expect(Dialogue.conversations).to be_empty
       expect(stubbed_conversations.count).to eq 2
       expect(stubbed_conversations.first).to eq "First step"
       expect(stubbed_conversations.second).to eq "Second step"
     end
 
     it "runs the first step of the diverged conversation" do
-      Converse::ConversationTemplate.build(:ask_color) do |convo|
+      Dialogue::ConversationTemplate.build(:ask_color) do |convo|
         convo.ask "What color t-shirt do you want?" do |convo, response|
           convo.end "Thank you!"
         end
       end.register
 
-      Converse::ConversationTemplate.build(:retrieve_shirt_specs) do |convo|
+      Dialogue::ConversationTemplate.build(:retrieve_shirt_specs) do |convo|
         convo.ask "What size t-shirt do you want?" do |convo, response|
           convo.diverge :ask_color
         end
@@ -39,7 +39,7 @@ RSpec.describe "diverging a conversation" do
 
       answer_all_questions "XL", "black"
 
-      expect(Converse.conversations).to be_empty
+      expect(Dialogue.conversations).to be_empty
       expect(stubbed_conversations.count).to eq 3
       expect(stubbed_conversations.first).to eq "What size t-shirt do you want?"
       expect(stubbed_conversations.second).to eq "What color t-shirt do you want?"
@@ -49,16 +49,16 @@ RSpec.describe "diverging a conversation" do
 
   describe "diverging at the end from a simple conversation" do
     it "unregisters the conversation when it's complete" do
-      Converse::ConversationTemplate.build(:second_step) do |convo|
+      Dialogue::ConversationTemplate.build(:second_step) do |convo|
         convo.say "Second step"
       end.register
 
-      Converse::ConversationTemplate.build(:first_step) do |convo|
+      Dialogue::ConversationTemplate.build(:first_step) do |convo|
         convo.say "First step"
         convo.diverge :second_step
       end.register.start message
 
-      expect(Converse.conversations).to be_empty
+      expect(Dialogue.conversations).to be_empty
       expect(stubbed_conversations.count).to eq 2
       expect(stubbed_conversations.first).to eq "First step"
       expect(stubbed_conversations.second).to eq "Second step"
@@ -67,11 +67,11 @@ RSpec.describe "diverging a conversation" do
 
   describe "returning from a diverged conversation" do
     it "runs the conversation after the diverge" do
-      Converse::ConversationTemplate.build(:ask_color) do |convo|
+      Dialogue::ConversationTemplate.build(:ask_color) do |convo|
         convo.ask "What color t-shirt do you want?"
       end.register
 
-      Converse::ConversationTemplate.build(:retrieve_shirt_specs) do |convo|
+      Dialogue::ConversationTemplate.build(:retrieve_shirt_specs) do |convo|
         convo.ask "What size t-shirt do you want?" do |convo, response|
           convo.diverge :ask_color
           convo.say "Thank you!"
@@ -81,7 +81,7 @@ RSpec.describe "diverging a conversation" do
 
       answer_all_questions "XL", "black"
 
-      expect(Converse.conversations).to be_empty
+      expect(Dialogue.conversations).to be_empty
       expect(stubbed_conversations.count).to eq 3
       expect(stubbed_conversations.first).to eq "What size t-shirt do you want?"
       expect(stubbed_conversations.second).to eq "What color t-shirt do you want?"
@@ -91,11 +91,11 @@ RSpec.describe "diverging a conversation" do
 
   describe "diverging to simple step and then returning" do
     it "runs the conversation after the diverge" do
-      Converse::ConversationTemplate.build(:ready_statement) do |convo|
+      Dialogue::ConversationTemplate.build(:ready_statement) do |convo|
         convo.say "We are ready!"
       end.register
 
-      Converse::ConversationTemplate.build(:retrieve_shirt_size) do |convo|
+      Dialogue::ConversationTemplate.build(:retrieve_shirt_size) do |convo|
         convo.diverge :ready_statement
         convo.ask "What size t-shirt do you want?" do |convo, response|
           convo.ask "What color t-shirt do you want?"
@@ -104,7 +104,7 @@ RSpec.describe "diverging a conversation" do
 
       answer_all_questions "XL", "black"
 
-      expect(Converse.conversations).to be_empty
+      expect(Dialogue.conversations).to be_empty
       expect(stubbed_conversations.count).to eq 3
     end
   end
