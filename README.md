@@ -67,6 +67,12 @@ This will register the conversation for the user and channel with the factory an
 - [ ] Add support for Facebook
 - [ ] Add support for persistent conversations (serializable proc)
 
+## RELEASING A NEW GEM
+
+1. Bump the VERSION in `lib/dialogue/version.rb`
+1. Commit changes and push to GitHub
+1. run `bundle exec rake release`
+
 ## LICENSE
 
 Copyright (c) 2016, [Tatsu, Inc.](http://tatsu.io).
