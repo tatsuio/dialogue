@@ -1,6 +1,8 @@
 Dialogue
 ========
 
+[![Gem Version](https://badge.fury.io/rb/dialogue.svg)](https://badge.fury.io/rb/dialogue)
+
 [ ![Codeship Status for tatsuio/dialogue](https://app.codeship.com/projects/9afef670-f132-0134-a265-7e8cdab40218/status?branch=master)](https://app.codeship.com/projects/209305)
 
 ## DESCRIPTION
