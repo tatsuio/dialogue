@@ -1,6 +1,8 @@
 Dialogue
 ========
 
+[ ![Codeship Status for tatsuio/dialogue](https://app.codeship.com/projects/9afef670-f132-0134-a265-7e8cdab40218/status?branch=master)](https://app.codeship.com/projects/209305)
+
 ## DESCRIPTION
 
 A DSL for defining conversations and workflows in Ruby. The conversations follow those workflows based on incoming messages and their intents.
