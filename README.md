@@ -1,6 +1,8 @@
 Dialogue
 ========
 
+[ ![Codeship Status for tatsuio/dialogue](https://app.codeship.com/projects/9afef670-f132-0134-a265-7e8cdab40218/status?branch=master)](https://app.codeship.com/projects/209305)
+
 ## DESCRIPTION
 
 A DSL for defining conversations and workflows in Ruby. The conversations follow those workflows based on incoming messages and their intents.
@@ -66,6 +68,12 @@ This will register the conversation for the user and channel with the factory an
 - [ ] Add timeouts for conversations
 - [ ] Add support for Facebook
 - [ ] Add support for persistent conversations (serializable proc)
+
+## RELEASING A NEW GEM
+
+1. Bump the VERSION in `lib/dialogue/version.rb`
+1. Commit changes and push to GitHub
+1. run `bundle exec rake release`
 
 ## LICENSE
 
