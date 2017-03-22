@@ -1,4 +1,4 @@
-module Converse
+module Dialogue
   class ConversationOptionsValidator
     VALID_OPTIONS = [:access_token, :author_id].freeze
 

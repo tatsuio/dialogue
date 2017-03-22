@@ -1,4 +1,4 @@
-RSpec.describe Converse::TemplateFactory do
+RSpec.describe Dialogue::TemplateFactory do
   let(:name) { :select_size }
   let(:template) { double(:template, name: name) }
   subject { described_class.instance }
@@ -39,7 +39,7 @@ RSpec.describe Converse::TemplateFactory do
     it "raises a TemplateAlreadyRegisteredError if the template name is already registered" do
       subject.register template
 
-      expect { subject.register template }.to raise_error Converse::TemplateAlreadyRegisteredError
+      expect { subject.register template }.to raise_error Dialogue::TemplateAlreadyRegisteredError
     end
   end
 

@@ -1,10 +1,10 @@
-RSpec.describe Converse::Conversation do
-  include Converse::Test::SlackClientStubbing
+RSpec.describe Dialogue::Conversation do
+  include Dialogue::Test::SlackClientStubbing
 
-  let(:decorated_message) { Converse::MessageDecorators::Slack.new(message) }
+  let(:decorated_message) { Dialogue::MessageDecorators::Slack.new(message) }
   let(:message) { double(:message, channel: "C1", team: "T1", user: "U1") }
   let(:proc) { Proc.new {} }
-  let(:template) { Converse::ConversationTemplate.new &proc }
+  let(:template) { Dialogue::ConversationTemplate.new &proc }
 
   describe "#initialize" do
     subject { described_class.new template, decorated_message }
@@ -51,7 +51,7 @@ RSpec.describe Converse::Conversation do
     it "streams the message to slack by default" do
       question = "Are you ok?"
 
-      expect_any_instance_of(Converse::Streams::Slack).to \
+      expect_any_instance_of(Dialogue::Streams::Slack).to \
         receive(:puts).with(question, channel_id, user_id, {})
 
       subject.ask question
@@ -66,12 +66,12 @@ RSpec.describe Converse::Conversation do
 
   describe "#diverge" do
     let(:another_proc) { Proc.new {} }
-    let(:another_template) { Converse::ConversationTemplate.build(:another_template,
+    let(:another_template) { Dialogue::ConversationTemplate.build(:another_template,
                                                                   &another_proc) }
     subject { described_class.new template, decorated_message }
 
-    before { Converse.register_template another_template }
-    after { Converse.clear_templates }
+    before { Dialogue.register_template another_template }
+    after { Dialogue.clear_templates }
 
     it "finds the conversation by name" do
       subject.diverge :another_template
@@ -93,13 +93,13 @@ RSpec.describe Converse::Conversation do
 
   describe "#end" do
     let(:proc) { Proc.new {} }
-    let(:template) { Converse::ConversationTemplate.new &proc }
+    let(:template) { Dialogue::ConversationTemplate.new &proc }
     subject { described_class.new template }
 
     it "removes itself from the conversations" do
-      Converse.register_conversation subject
+      Dialogue.register_conversation subject
 
-      expect { subject.end }.to change { Converse.conversations.count }.by -1
+      expect { subject.end }.to change { Dialogue.conversations.count }.by -1
     end
 
     it "can optionally say the last word" do
@@ -138,7 +138,7 @@ RSpec.describe Converse::Conversation do
     it "streams the message" do
       statement = "Hello world"
 
-      expect_any_instance_of(Converse::Streams::Slack).to \
+      expect_any_instance_of(Dialogue::Streams::Slack).to \
         receive(:puts).with(statement, channel_id, user_id, {})
 
       subject.say statement
@@ -155,18 +155,18 @@ RSpec.describe Converse::Conversation do
 
   describe "#perform" do
     let(:proc) { Proc.new {} }
-    let(:template) { Converse::ConversationTemplate.new &proc }
+    let(:template) { Dialogue::ConversationTemplate.new &proc }
     subject { described_class.new template }
 
     it "removes itself from the conversations if there are no more steps" do
-      Converse.register_conversation subject
+      Dialogue.register_conversation subject
 
-      expect { subject.perform }.to change { Converse.conversations.count }.by -1
+      expect { subject.perform }.to change { Dialogue.conversations.count }.by -1
     end
 
     it "yields the message" do
       message = double(:message)
-      Converse.register_conversation subject
+      Dialogue.register_conversation subject
 
       expect(proc).to receive(:call).with(subject, message)
 

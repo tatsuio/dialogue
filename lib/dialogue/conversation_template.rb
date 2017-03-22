@@ -1,4 +1,4 @@
-module Converse
+module Dialogue
   class ConversationTemplate
     attr_reader :name, :template
 
@@ -12,7 +12,7 @@ module Converse
     end
 
     def register
-      Converse.register_template self
+      Dialogue.register_template self
       self
     end
 

@@ -1,7 +1,7 @@
-module Converse
+module Dialogue
   class DSL
     def on(intent, &block)
-      #Converse.register_conversation(ConversationTemplate.new(intent))
+      #Dialogue.register_conversation(ConversationTemplate.new(intent))
     end
 
     def self.run(block)

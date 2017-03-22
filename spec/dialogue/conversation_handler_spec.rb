@@ -1,4 +1,4 @@
-RSpec.describe Converse::ConversationHandler do
+RSpec.describe Dialogue::ConversationHandler do
   describe "#can_handle?" do
     xit "returns true if the intent of the message was found"
     xit "returns false if the intent of the message was not found"

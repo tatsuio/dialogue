@@ -1,9 +1,9 @@
-RSpec.describe Converse do
+RSpec.describe Dialogue do
   describe ".build" do
     it "runs the DSL with the specified block" do
       block = Proc.new {}
 
-      expect(Converse::DSL).to receive(:run).with(block)
+      expect(Dialogue::DSL).to receive(:run).with(block)
 
       described_class.build &block
     end
@@ -35,7 +35,7 @@ RSpec.describe Converse do
 
   describe ".conversation_registered?" do
     it "delegates to the conversation factory" do
-      expect(Converse::ConversationFactory.instance).to receive(:registered?).with "USER1", "CHANNEL1"
+      expect(Dialogue::ConversationFactory.instance).to receive(:registered?).with "USER1", "CHANNEL1"
 
       described_class.conversation_registered? "USER1", "CHANNEL1"
     end
@@ -43,7 +43,7 @@ RSpec.describe Converse do
 
   describe ".conversations" do
     it "delegates to the conversation factory" do
-      expect(Converse::ConversationFactory.instance).to receive(:conversations)
+      expect(Dialogue::ConversationFactory.instance).to receive(:conversations)
 
       described_class.conversations
     end
@@ -51,7 +51,7 @@ RSpec.describe Converse do
 
   describe ".find_conversation" do
     it "delegates to the conversation factory" do
-      expect(Converse::ConversationFactory.instance).to receive(:find).with "USER1", "CHANNEL1"
+      expect(Dialogue::ConversationFactory.instance).to receive(:find).with "USER1", "CHANNEL1"
 
       described_class.find_conversation "USER1", "CHANNEL1"
     end
@@ -59,7 +59,7 @@ RSpec.describe Converse do
 
   describe ".find_template" do
     it "delegates to the template factory" do
-      expect(Converse::TemplateFactory.instance).to receive(:find).with "select_size"
+      expect(Dialogue::TemplateFactory.instance).to receive(:find).with "select_size"
 
       described_class.find_template "select_size"
     end
@@ -69,7 +69,7 @@ RSpec.describe Converse do
     let(:conversation) { double(:conversation) }
 
     it "delegates to the conversation factory" do
-      expect(Converse::ConversationFactory.instance).to receive(:register).with conversation
+      expect(Dialogue::ConversationFactory.instance).to receive(:register).with conversation
 
       described_class.register_conversation conversation
     end
@@ -79,7 +79,7 @@ RSpec.describe Converse do
     let(:template) { double(:template) }
 
     it "delegates to the template factory" do
-      expect(Converse::TemplateFactory.instance).to receive(:register).with template
+      expect(Dialogue::TemplateFactory.instance).to receive(:register).with template
 
       described_class.register_template template
     end
@@ -87,7 +87,7 @@ RSpec.describe Converse do
 
   describe ".templates" do
     it "delegates to the template factory" do
-      expect(Converse::TemplateFactory.instance).to receive(:templates)
+      expect(Dialogue::TemplateFactory.instance).to receive(:templates)
 
       described_class.templates
     end
@@ -97,7 +97,7 @@ RSpec.describe Converse do
     let(:template) { double(:template, name: "select_shirt") }
 
     it "delegates to the template factory" do
-      expect(Converse::TemplateFactory.instance).to receive(:registered?).with template.name
+      expect(Dialogue::TemplateFactory.instance).to receive(:registered?).with template.name
 
       described_class.template_registered? template.name
     end
@@ -107,7 +107,7 @@ RSpec.describe Converse do
     let(:conversation) { double(:conversation) }
 
     it "delegates to the conversation factory" do
-      expect(Converse::ConversationFactory.instance).to receive(:unregister).with conversation
+      expect(Dialogue::ConversationFactory.instance).to receive(:unregister).with conversation
 
       described_class.unregister_conversation conversation
     end

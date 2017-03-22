@@ -1,4 +1,4 @@
-RSpec.describe Converse::Streams::Slack do
+RSpec.describe Dialogue::Streams::Slack do
   describe "#initialize" do
     it "optionally takes an access token" do
       expect(Slack::Web::Client).to \

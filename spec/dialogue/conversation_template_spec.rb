@@ -1,9 +1,9 @@
-RSpec.describe Converse::ConversationTemplate do
+RSpec.describe Dialogue::ConversationTemplate do
   describe ".build" do
     let(:name) { :thread_one }
 
     it "returns a new instance of a template" do
-      expect(described_class.build(name)).to be_kind_of Converse::ConversationTemplate
+      expect(described_class.build(name)).to be_kind_of Dialogue::ConversationTemplate
     end
 
     it "creates a new template each time" do
@@ -37,7 +37,7 @@ RSpec.describe Converse::ConversationTemplate do
 
   describe "#register" do
     subject { described_class.new }
-    after { Converse.clear_templates }
+    after { Dialogue.clear_templates }
 
     it "returns the template to enable chaining" do
       expect(subject.register).to eq subject
@@ -46,7 +46,7 @@ RSpec.describe Converse::ConversationTemplate do
     it "registers the conversation with the factory" do
       subject.register
 
-      expect(Converse.templates).to include subject
+      expect(Dialogue.templates).to include subject
     end
   end
 
@@ -56,9 +56,9 @@ RSpec.describe Converse::ConversationTemplate do
     let(:user_id) { "USER1" }
 
     it "delegates the creation of the conversation to the template runner" do
-      expect(Converse::ConversationTemplateRunner).to receive(:new).with(message, {})
+      expect(Dialogue::ConversationTemplateRunner).to receive(:new).with(message, {})
         .and_call_original
-      expect_any_instance_of(Converse::ConversationTemplateRunner).to receive(:run).with(subject)
+      expect_any_instance_of(Dialogue::ConversationTemplateRunner).to receive(:run).with(subject)
 
       subject.start message
     end

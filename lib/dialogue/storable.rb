@@ -1,4 +1,4 @@
-module Converse
+module Dialogue
   module Storable
     def data
       @data ||= {}

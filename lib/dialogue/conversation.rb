@@ -1,6 +1,6 @@
 require "dialogue/storable"
 
-module Converse
+module Dialogue
   class Conversation
     include ConversationOptions
     include Storable
@@ -35,7 +35,7 @@ module Converse
     end
 
     def diverge(template_name)
-      template = Converse.find_template template_name
+      template = Dialogue.find_template template_name
       unless template.nil?
         templates << template
         steps << template.template
@@ -45,19 +45,19 @@ module Converse
 
     def end(statement=nil)
       say statement unless statement.nil?
-      Converse.unregister_conversation self
+      Dialogue.unregister_conversation self
     end
 
     def perform(*args)
       step = steps.pop
       step.call self, *args unless step.nil?
-      Converse.unregister_conversation self if steps.empty?
+      Dialogue.unregister_conversation self if steps.empty?
     end
     alias_method :continue, :perform
 
     def say(statement, opts={})
       ensure_registration
-      Converse::Streams::Slack.new(options[:access_token])
+      Dialogue::Streams::Slack.new(options[:access_token])
         .puts statement, channel_id, user_id, opts
     end
     alias_method :reply, :say
@@ -67,8 +67,8 @@ module Converse
     def ensure_registration
       # The conversation can be unregistered from a diverge, so let's ensure it
       # is registered
-      if !Converse.conversation_registered? user_id, channel_id
-        Converse.register_conversation self
+      if !Dialogue.conversation_registered? user_id, channel_id
+        Dialogue.register_conversation self
       end
     end
   end

@@ -1,6 +1,6 @@
 require "slack-ruby-client"
 
-module Converse
+module Dialogue
   module Streams
     class Slack
       def initialize(access_token=nil)

@@ -1,4 +1,4 @@
-module Converse
+module Dialogue
   module ConversationOptions
     attr_reader :options
 

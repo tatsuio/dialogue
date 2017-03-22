@@ -1,4 +1,4 @@
-module Converse
+module Dialogue
   module MessageDecorators
     class Slack < SimpleDelegator
       attr_reader :original_message

@@ -1,4 +1,4 @@
-RSpec.describe Converse::MessageDecorators::Slack do
+RSpec.describe Dialogue::MessageDecorators::Slack do
   let(:channel_id) { "CHANNEL1" }
   let(:message) { double(:message, user: user_id, channel: channel_id, team: team_id) }
   let(:team_id) { "TEAM1" }

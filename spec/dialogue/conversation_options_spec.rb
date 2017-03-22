@@ -1,7 +1,7 @@
-RSpec.describe Converse::ConversationOptions do
+RSpec.describe Dialogue::ConversationOptions do
   let(:dummy_class) do
     Class.new do
-      include Converse::ConversationOptions
+      include Dialogue::ConversationOptions
 
       def initialize(options)
         guard_options! options
@@ -38,7 +38,7 @@ RSpec.describe Converse::ConversationOptions do
   context "invalid options" do
     it "does not allow for random options" do
       expect { dummy_class.new({ blah: :bleh }) }.to \
-        raise_error Converse::InvalidOptionsError, "blah is not a valid option"
+        raise_error Dialogue::InvalidOptionsError, "blah is not a valid option"
     end
   end
 end

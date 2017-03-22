@@ -1,4 +1,4 @@
-module Converse
+module Dialogue
   class ConversationTemplateRunner
     include ConversationOptions
 
@@ -25,12 +25,12 @@ module Converse
 
     def run(template)
       unless message_from_author?
-        if Converse.conversation_registered? user_id, channel_id
-          conversation = Converse.find_conversation user_id, channel_id
+        if Dialogue.conversation_registered? user_id, channel_id
+          conversation = Dialogue.find_conversation user_id, channel_id
         else
           conversation = Conversation.new template, decorated_message, options
 
-          Converse.register_conversation conversation
+          Dialogue.register_conversation conversation
         end
 
         conversation.perform decorated_message

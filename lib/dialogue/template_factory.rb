@@ -1,6 +1,6 @@
 require "singleton"
 
-module Converse
+module Dialogue
   class TemplateFactory
     include Singleton
 

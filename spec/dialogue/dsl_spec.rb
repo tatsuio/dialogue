@@ -1,14 +1,14 @@
-RSpec.describe Converse::DSL do
+RSpec.describe Dialogue::DSL do
   describe "#on" do
     subject { described_class.new }
 
-    before { Converse.clear_conversations }
+    before { Dialogue.clear_conversations }
 
     xit "generates a conversation with an intent" do
       subject.on :blah
 
-      expect(Converse.conversations.length).to eq 1
-      expect(Converse.conversations.first.name).to eq :blah
+      expect(Dialogue.conversations.length).to eq 1
+      expect(Dialogue.conversations.first.name).to eq :blah
     end
   end
 

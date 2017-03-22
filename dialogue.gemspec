@@ -5,7 +5,7 @@ require "dialogue/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "dialogue"
-  spec.version       = Converse::VERSION
+  spec.version       = Dialogue::VERSION
   spec.authors       = ["Jamie Wright"]
   spec.email         = ["jamie@tastsu.io"]
 

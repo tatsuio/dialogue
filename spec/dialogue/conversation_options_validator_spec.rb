@@ -1,4 +1,4 @@
-RSpec.describe Converse::ConversationOptionsValidator do
+RSpec.describe Dialogue::ConversationOptionsValidator do
   describe "::VALID_OPTIONS" do
     it "returns the valid option keys" do
       expect(described_class::VALID_OPTIONS).to eq [:access_token, :author_id]

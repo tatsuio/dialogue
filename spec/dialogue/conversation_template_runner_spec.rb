@@ -1,4 +1,4 @@
-RSpec.describe Converse::ConversationTemplateRunner do
+RSpec.describe Dialogue::ConversationTemplateRunner do
   let(:author_id) { "BOT" }
   let(:channel_id) { "CHANNEL1" }
   let(:message) { double(:message, user: user_id, channel: channel_id, team: team_id) }
@@ -23,40 +23,40 @@ RSpec.describe Converse::ConversationTemplateRunner do
 
   describe "#run" do
     context "with a non-registered conversation" do
-      after { Converse.conversations.clear }
+      after { Dialogue.conversations.clear }
 
       it "it creates a conversation" do
-        expect(Converse::Conversation).to \
-          receive(:new).with(template, Converse::MessageDecorators::Slack, options)
+        expect(Dialogue::Conversation).to \
+          receive(:new).with(template, Dialogue::MessageDecorators::Slack, options)
           .and_call_original
 
         subject.run template
       end
 
       it "adds the conversation to the factory" do
-        expect(Converse).to receive(:register_conversation)
+        expect(Dialogue).to receive(:register_conversation)
 
         subject.run template
       end
 
       it "performs the conversation" do
-        expect_any_instance_of(Converse::Conversation).to receive(:perform)
+        expect_any_instance_of(Dialogue::Conversation).to receive(:perform)
 
         subject.run template
       end
     end
 
     context "with a registered conversation" do
-      let(:conversation) { Converse::Conversation.new template, decorated_message, options }
-      let(:decorated_message) { Converse::MessageDecorators::Slack.new(message) }
+      let(:conversation) { Dialogue::Conversation.new template, decorated_message, options }
+      let(:decorated_message) { Dialogue::MessageDecorators::Slack.new(message) }
 
       before do
-        Converse.register_conversation conversation
+        Dialogue.register_conversation conversation
       end
-      after { Converse.conversations.clear }
+      after { Dialogue.conversations.clear }
 
       it "does not add the conversation to the factory" do
-        expect(Converse).to_not receive(:register_conversation)
+        expect(Dialogue).to_not receive(:register_conversation)
 
         subject.run template
       end
@@ -72,7 +72,7 @@ RSpec.describe Converse::ConversationTemplateRunner do
       before { allow(message).to receive(:user).and_return author_id }
 
       it "does not create the conversation" do
-        expect(Converse::Conversation).to_not receive(:new)
+        expect(Dialogue::Conversation).to_not receive(:new)
 
         subject.run template
       end

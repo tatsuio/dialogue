@@ -1,4 +1,4 @@
-RSpec.describe Converse::ConversationFactory do
+RSpec.describe Dialogue::ConversationFactory do
   let(:channel_id) { "CHANNEL1" }
   let(:conversation) { double(:conversation, user_id: user_id, channel_id: channel_id) }
   let(:user_id) { "USER1" }

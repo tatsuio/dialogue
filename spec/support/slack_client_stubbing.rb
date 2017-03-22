@@ -1,4 +1,4 @@
-module Converse
+module Dialogue
   module Test
     module SlackClientStubbing
       def stubbed_conversations

@@ -14,7 +14,7 @@ require "dialogue/template_already_registered_error"
 require "dialogue/template_factory"
 require "dialogue/version"
 
-module Converse
+module Dialogue
   class << self
     def build(&block)
       DSL.run block
