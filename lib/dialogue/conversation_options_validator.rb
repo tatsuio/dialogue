@@ -1,6 +1,6 @@
 module Dialogue
   class ConversationOptionsValidator
-    VALID_OPTIONS = [:access_token, :author_id].freeze
+    VALID_OPTIONS = [:access_token, :author_id, :data].freeze
 
     def validate(options)
       errors = []
