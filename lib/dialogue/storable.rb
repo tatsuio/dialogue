@@ -13,7 +13,8 @@ module Dialogue
       if present
         present = keys.all? do |key|
           !data[key].nil? &&
-            (data[key].respond_to?(:empty?) && !data[key].empty?)
+            (!data[key].respond_to?(:empty?) ||
+             (data[key].respond_to?(:empty?) && !data[key].empty?))
         end
       end
       present

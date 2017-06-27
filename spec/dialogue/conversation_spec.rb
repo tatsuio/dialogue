@@ -150,6 +150,13 @@ RSpec.describe Dialogue::Conversation do
       expect(subject).to_not have_data(:key1, :key2)
     end
 
+    it "returns true if none of the keys are empty" do
+      subject.store!(key1: Date.today)
+      subject.store!(key2: :value2)
+
+      expect(subject).to have_data(:key1, :key2)
+    end
+
     it "returns false if one of the keys is empty" do
       subject.store!(key1: [])
       subject.store!(key2: :value2)
