@@ -129,6 +129,35 @@ RSpec.describe Dialogue::Conversation do
     end
   end
 
+  describe "#has_data?" do
+    it "returns false if one of the keys is not present" do
+      subject.store!(key1: :value1)
+
+      expect(subject).to_not have_data(:key1, :key2)
+    end
+
+    it "returns true if all of the keys are present" do
+      subject.store!(key1: :value1)
+      subject.store!(key2: :value2)
+
+      expect(subject).to have_data(:key1, :key2)
+    end
+
+    it "returns false if one of the keys has nil data" do
+      subject.store!(key1: nil)
+      subject.store!(key2: :value2)
+
+      expect(subject).to_not have_data(:key1, :key2)
+    end
+
+    it "returns false if one of the keys is empty" do
+      subject.store!(key1: [])
+      subject.store!(key2: :value2)
+
+      expect(subject).to_not have_data(:key1, :key2)
+    end
+  end
+
   describe "#say" do
     let(:channel_id) { nil }
     let(:user_id) { nil }
