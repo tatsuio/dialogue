@@ -1,3 +1,5 @@
+require "delegate"
+
 module Dialogue
   module MessageDecorators
     class Slack < SimpleDelegator

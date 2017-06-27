@@ -26,6 +26,7 @@ module Dialogue
         @user_id = message.user_id
       end
 
+      @data = options.delete(:data)
       @options = options.freeze
     end
 
