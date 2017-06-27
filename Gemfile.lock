@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    dialogue (0.0.2)
+    dialogue (0.0.3)
       slack-ruby-client
 
 GEM
