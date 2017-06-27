@@ -8,7 +8,7 @@ module Dialogue
       guard_options! options
 
       @message = message
-      @options = options.freeze
+      @options = options
     end
 
     def channel_id
