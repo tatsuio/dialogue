@@ -5,7 +5,10 @@ RSpec.describe "registering a conversation" do
                          team: "T1234") }
 
   before { stub_slack_chat true }
-  after { Dialogue.clear_templates }
+  after do
+    Dialogue.clear_conversations
+    Dialogue.clear_templates
+  end
 
   describe "registering a conversation with data" do
     it "adds the data to the conversation" do

@@ -5,7 +5,10 @@ RSpec.describe "diverging a conversation" do
   let(:message) { double(:message, user: "U1234", channel: "C1234", team: "T1234") }
 
   before { stub_slack_chat true }
-  after { Dialogue.clear_templates }
+  after do
+    Dialogue.clear_conversations
+    Dialogue.clear_templates
+  end
 
   describe "diverging from a simple conversation to a simple conversation" do
     it "unregisters the conversation when it's complete" do
